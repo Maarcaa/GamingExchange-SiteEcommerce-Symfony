@@ -79,7 +79,7 @@ class InscriptionFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('gender', ChoiceType::class, [
+            ->add('sexe', ChoiceType::class, [
                 'label' => 'Civilité',
                 'expanded' => true,
                 'choices' => [

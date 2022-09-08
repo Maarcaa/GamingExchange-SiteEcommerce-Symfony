@@ -14,7 +14,7 @@
 				</form>
 
 			{% if not app.user %}
-				<a class="nav-link text-white navhover" href="">Inscription</a>
+				<a class="nav-link text-white navhover" href="{{ path('user_register')}}">Inscription</a>
 
 				<a class="nav-link text-white navhover" href="">Connexion</a>
 			{% endif %}
