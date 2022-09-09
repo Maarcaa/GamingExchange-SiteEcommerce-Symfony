@@ -5,7 +5,6 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\User;
 use App\Form\InscriptionFormType;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +39,12 @@ class AdminMembreController extends AbstractController
      */
     public function updateMembre(User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux administrateurs');
+            return $this->redirectToRoute('default_home');
+        }
 
         $form = $this->createForm(InscriptionFormType::class, $user)->handleRequest($request);
 
@@ -69,6 +74,13 @@ class AdminMembreController extends AbstractController
      */
     public function hardDeleteMembre(User $user, EntityManagerInterface $entityManager): RedirectResponse
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux administrateurs');
+            return $this->redirectToRoute('default_home');
+        }
+
         $entityManager->remove($user);
         $entityManager->flush();
 

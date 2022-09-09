@@ -4,6 +4,12 @@
 
 {% block body %}
 
+   <div class="row">
+        <div class="col-8 mx-auto">
+            {% include 'include/_flashes.html.twig' %}
+        </div>
+    </div>
+
     {% if action is not defined %}
         <h1 class="my-4 text-center">Inscription</h1>
     {% else %}
