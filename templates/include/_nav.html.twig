@@ -1,65 +1,62 @@
 <nav class="navbar navbar-expand-lg text-deco-none backgroundred align-middle">
-	<div class="container-fluid mx-2">
-		<a class="navbar-brand text-white navhover" href="{{ path('default_home') }}">Gaming Exchange</a>
+	<div class="container-fluid">
+		<a class="navbar-brand text-white navhover" href="{{ path('default_home') }}">GamingExchange.fr</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<form class="d-flex col-8 mx-auto">
-					<input class="form-control me-2" type="search" aria-label="Search">
-					<button class="btn btn-light" type="submit">
-						<i class="fa-solid fa-magnifying-glass"></i>
-					</button>
-				</form>
+			<form class="d-flex col-10 mx-auto">
+				<input class="form-control me-2" type="search" aria-label="Search">
+				<button class="btn btn-light" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</form>
 
 			{% if not app.user %}
-                        <a class="nav-link text-white navhover" href="{{ path('user_register') }}">S'inscrire</a>
-                        <a class="nav-link text-white navhover" href="{{ path('app_login') }}">Se connecter</a>
-                {% else %}
-                        <a class="nav-link text-white navhover" href="{{ path('show_profile') }}">Espace perso</a>
-                        <a class="nav-link text-white navhover" href="{{ path('app_logout') }}">Se déconnecter</a>
-                {% endif %}
+				<ul class="navbar-nav ms-auto">
+					<li>
+						<a class="nav-link text-white navhover" href="{{ path('user_register') }}">S'inscrire</a>
+					</li>
+					<li>
+						<a class="nav-link text-white navhover" href="{{ path('app_login') }}">Se connecter</a>
+					</li>
 
-			{% if app.user %}
-													<ul class="navbar-nav ms-auto">
-														{% if is_granted("ROLE_ADMIN") %}
-															<li class="nav-item dropdown navhover:hover">
-																<a class="nav-link dropdown-toggle text-primary  navhover:hover text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-																	Espace Admin
-																</a>
-																<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-																	<li>
-																		<a class="dropdown-item" href="{{ path('show_membre') }}">Gestion des membres</a>
-																	</li>
-																	<li><hr class="dropdown-divider"></li>
-																	<li>
-																		<a class="dropdown-item" href="">Gestion des produits</a>
-																	</li>
-																	<li><hr class="dropdown-divider"></li>
-																	<li>
-																		<a class="dropdown-item" href="">Gestion des catégories</a>
-																	</li>
-																	<li><hr class="dropdown-divider"></li>
-																	<li>
-																		<a class="dropdown-item" href="">Gestion du slider</a>
-																	</li>
-																</ul>
-															</li>
-									
-														{% endif %}
-														<li class="nav-item ">
-															<a class="nav-link" href="">
-																<i class="fa-solid fa-right-from-bracket text-white"></i>
-															</a>
-														</li>
-													{% endif %}
-		</ul>
+				{% else %}
+					<ul class="navbar-nav ms-auto">
+					{% if is_granted("ROLE_ADMIN") %}
+							<li class="nav-item dropdown navhover:hover">
+								<a class="nav-link dropdown-toggle text-primary  navhover:hover text-white navhover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Espace Admin
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<li>
+										<a class="dropdown-item navhover" href="{{ path('show_membre') }}">Gestion des membres</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item navhover" href="">Gestion des produits</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item navhover" href="">Gestion des catégories</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item navhover" href="{{ path('show_slider') }}">Gestion du slider</a>
+									</li>
+								</ul>
+							</li>
+
+						{% endif %}
+						<a class="nav-link text-white navhover" href="{{ path('show_profile') }}">Espace perso</a>
+						
+					{% endif %}
+				</ul>
+			</div>
+		</div>
 	</div>
-</div>
-</div>
 </nav>
-
 <nav class="nav nav-pills flex-column flex-sm-row backgroundredlight">
 	<a class="flex-sm-fill text-sm-center nav-link text-white navhover" href="#">Nintendo</a>
 	<a class="flex-sm-fill text-sm-center nav-link text-white navhover" href="#">Sony</a>

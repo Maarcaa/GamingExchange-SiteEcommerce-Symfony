@@ -34,6 +34,7 @@ class AdminMembreController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/modifier-membre_{id}", name="update_membre", methods={"GET|POST"})
      */

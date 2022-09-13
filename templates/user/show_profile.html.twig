@@ -28,10 +28,15 @@
                     <p class="card-text">Ville : {{ app.user.ville }}</p>
                     <p class="card-text">Téléphone : {{ app.user.telephone }}</p>
                     <a href="{{ path('change_password') }}" class="btn btn-warning">Changer mon mot de passe</a>
+                    <a class="nav-link text-black navhover" href="{{ path('app_logout') }}">
+						<i class="fa-solid fa-right-from-bracket text-black navhover"></i> Se déconnecter
+					</a>
+			
                 </div>
                 <div class="card-footer text-muted">
                     Compte crée le : {{ app.user.createdAt | date('d/m/Y') }} | Modifié : {{ app.user.updatedAt | date('d/m/Y') }}
                 </div>
+                
             </div>
 
         </div>

@@ -1,0 +1,77 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Gestion des user {% endblock %}
+
+{% block body %}
+
+<h1 class="text-center my-4">Gestion des users</h1>
+
+	<div class="row">
+		<div
+			class="col-6 mx-auto">{% include 'include/_flashes.html.twig' %}
+		</div>
+	</div>
+
+<div class="row">
+	<div class="col-12 mx-auto my-4">
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+                    <th>Pseudo</th>
+					<th>Email</th>
+					<th>Roles</th>
+					
+					<th>Prénom</th>
+                    <th>Nom</th>
+					<th>Sexe</th>
+					<th>Adresse</th>
+					<th>Code Postal</th>
+					<th>Ville</th>
+					<th>Téléphone</th>
+					<th>Date de création</th>
+					<th>Date de modification</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ user.id }}</td>
+                        <td>{{ user.pseudo }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.roles | first }}
+							{# {% for role in user.roles %}
+							{{role}}
+							{% endfor %} #}
+						</td>
+						<td>{{ user.prenom }}</td>
+						<td>{{ user.nom }}</td>
+						<td>{{ user.sexe }}</td>
+						<td>{{ user.adresse }}</td>
+						<td>{{ user.codePostal }}</td>
+						<td>{{ user.ville }}</td>
+						<td>{{ user.telephone }}</td>
+						<td>{{ user.createdAt | date('d/m/Y') }}</td>
+						<td>{{ user.updatedAt | date('d/m/Y') }}</td>
+						<td>
+
+							<a href=" {{ path('update_membre', {"id": user.id}) }}" class="text-info" title="Modifier le user">
+								<i class="fa fa-edit"></i>
+							</a>
+							<a href="{{ path('hard_delete_membre', {"id" : user.id}) }}" class="text-danger" title="Archiver le user" onclick="return confirm('Voulez-vous supprimer ce user ?')">
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+</div></div>
+
+
+
+{% endblock %}

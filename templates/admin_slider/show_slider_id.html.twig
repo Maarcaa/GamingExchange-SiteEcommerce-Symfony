@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visualisation du slide
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="text-center my-4">Visualisation du slide</h1>
+	<div class="row">
+		<div class="col-12 mx-auto my-4">
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Photo</th>
+						<th>Ordre</th>
+						<th>Date d'enregistrement</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ slider.id }}</td>
+						<td><img src=" {{ asset('uploads/' ~ slider.photo) }}" width='500' height='300' alt=""></td>
+						<td>{{ slider.ordre }}</td>
+						<td>{{ slider.createdAt | date('d/m/Y') }}</td>
+						<td>
+							<a href=" {{ path('update_slider', {"id": slider.id}) }}" class="" title="Modifier le slider">
+								<i class="fa fa-edit"></i>
+							</a>
+							<a href="{{ path('hard_delete_slider', {"id" : slider.id}) }}" class="text-danger" title="Archiver le slider" onclick="return confirm('Voulez-vous supprimer ce slider ?')">
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

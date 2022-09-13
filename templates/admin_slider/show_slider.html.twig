@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des slides
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="text-center my-4">Gestion des Slides</h1>
+
+	<div class="row">
+		<div class="col-6 mx-auto">{% include 'include/_flashes.html.twig' %}
+		</div>
+	</div>
+
+	{# <div class="row mx-auto text-center">
+				<div class="col-12">
+					<a href="#" class="btn btn-warning text-center">
+						<i class="fa fa-trash"></i>
+						Supprimer un slider</a>
+				</div>
+			</div> #}
+
+<div class="row">
+	<div class="col-12 mx-auto my-4">
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Photo</th>
+					<th>Ordre</th>
+					<th>Date d'enregistrement</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for slider in sliders %}
+					<tr>
+						<td>{{ slider.id }}</td>
+						<td ><img src="{{ asset('uploads/' ~ slider.photo) }}" width='500' height='300' alt=""></td>
+						<td>{{ slider.ordre }}</td>
+						<td>{{ slider.createdAt | date('d/m/Y') }}</td>
+						<td>
+							<a href=" {{ path('show_slider_{id}', {"id": slider.id}) }}" class="text-info" title="Visualiser le slider">
+							<i class="fa-solid fa-magnifying-glass"></i>
+							</a>
+							
+							<a href=" {{ path('update_slider', {"id": slider.id}) }}" class="" title="Modifier le slider">
+							<i class="fa fa-edit"></i>
+							</a>
+
+							<a href="{{ path('hard_delete_slider', {"id": slider.id}) }}" class="text-danger" title="Archiver le slider" onclick="return confirm('Voulez-vous supprimer ce slider ?')">
+							<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+	<div class="row">
+		<div class="col-11 mx-auto my-4">
+
+					{{ form_start(form) }}
+
+					<div class="row">
+
+					<div class="col-5">{{ form_row(form.photo) }}</div>
+					<div class="col-5">{{ form_row(form.ordre) }}</div>
+
+
+					{{ form_end(form) }}
+
+
+			</div>
+		</div>
+</div>
+
+
+{% endblock %}

@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -66,7 +67,7 @@ class SliderController extends AbstractController
         }
 
         $sliders = $entityManager->getRepository(Slider::class)->findAll();
-        return $this->render("admin/show_slider.html.twig", [
+        return $this->render("admin_slider/show_slider.html.twig", [
             'sliders' => $sliders,
             'form' => $form->createView()
         ]);
@@ -86,7 +87,7 @@ class SliderController extends AbstractController
      */
     public function showSliderId(Slider $slider): Response
     {
-        return $this->render("admin/show_slider_id.html.twig", [
+        return $this->render("admin_slider/show_slider_id.html.twig", [
             'slider' => $slider
         ]);
     }
@@ -103,6 +104,7 @@ class SliderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $slider->setUpdatedAt(new DateTime());
+
 
             /** @var UploadedFile $photo */
             $photo = $form->get('photo')->getData();
@@ -125,20 +127,24 @@ class SliderController extends AbstractController
             } #end if photo
 
         }
-
+        
         $entityManager->persist($slider);
         $entityManager->flush();
 
         $sliders = $entityManager->getRepository(Slider::class)->findAll();
 
-        return $this->render("admin_membre/gestion_slider.html.twig", [
+        return $this->render("admin_slider/update_slider_id.html.twig", [
             'form' => $form->createView(),
-            'sliders' => $sliders
+            'sliders' => $sliders,
+            'slider' => $slider
         ]); 
         
         $this->addFlash('success', "Le slider a bien été modifié de la base de données");
         return $this->redirectToRoute('show_slider');
     } # end function updateSlider
+
+
+
 
     /**
      * @Route("/supprimer-slider_{id}", name="hard_delete_slider", methods={"GET"})
