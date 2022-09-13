@@ -22,7 +22,7 @@ class Categorie
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom_categorie;
+    private $marque;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -59,14 +59,14 @@ class Categorie
         return $this->id;
     }
 
-    public function getNomCategorie(): ?string
+    public function getMarque(): ?string
     {
-        return $this->nom_categorie;
+        return $this->marque;
     }
 
-    public function setNomCategorie(string $nom_categorie): self
+    public function setMarque(string $marque): self
     {
-        $this->nom_categorie = $nom_categorie;
+        $this->marque = $marque;
 
         return $this;
     }

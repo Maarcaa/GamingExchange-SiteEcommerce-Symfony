@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir tous les articles{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-3">Tous les articles</h1>
+
+    <div class="row">
+        <div class="col-8 mx-auto">
+            {% include 'include/_flashes.html.twig' %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <a href="{{ path('create_produit') }}" class="btn btn-lg btn-primary">Ajouter un article <i class="fa-solid fa-circle-plus"></i></a>
+        </div>
+    </div>
+
+    <table class="table my-3">
+        <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Photo</th>
+            <th>Quantité Stock</th>
+            <th>Catégorie</th>
+            <th>Créé le</th>
+            <th>Modifié le</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for article in articles %}
+
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.titre }}</td>
+                <td>{{ article.description }}</td>
+                <td>{{ article.prix }}</td>€
+                <td><img src="{{ asset('uploads/' ~ article.image) }}" alt="image de article" width="80" height="58" style="object-fit: contain;"></td>
+                <td>{{ article.quantiteStock }}</td>
+                    {% for  categorie in categories %}
+                             <td>{{ categorie.marque }}</td>
+                    {% endfor %}
+                <td>{{ article.createdAt | date('d/m/Y') }}</td>
+                <td>{{ article.updatedAt | date('d/m/Y') }}</td>
+                <td>
+                    <a href="" title="Voir le produit" class="text-center align-middle text-primary"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{ path('update_produit', {'id': article.id}) }}" title="Modifier le produit" class="text-center align-middle text-warning"><i class="fa-solid fa-edit"></i></a>
+                    <a href="{{ path('soft_delete_produit', {'id': article.id} ) }}" title="Archiver le produit" class="text-center align-middle text-danger" onclick="return confirm('Voulez-vous archiver ce article ?\n Si oui, il sera off-line.')"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="11" class="bg-warning text-center">Aucun article en ligne</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

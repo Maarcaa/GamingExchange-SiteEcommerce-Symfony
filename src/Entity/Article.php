@@ -75,16 +75,10 @@ class Article
      */
     private $panier;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="articles")
-     */
-    private $commande;
-
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
-        $this->commande = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -242,34 +236,4 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommande(): Collection
-    {
-        return $this->commande;
-    }
-
-    public function addCommande(Commande $commande): self
-    {
-        if (!$this->commande->contains($commande)) {
-            $this->commande[] = $commande;
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): self
-    {
-        $this->commande->removeElement($commande);
-
-        return $this;
-    }
-
-    public function setCommande(?Commande $commande): self
-    {
-        $this->commande = $commande;
-
-        return $this;
-    }
 }

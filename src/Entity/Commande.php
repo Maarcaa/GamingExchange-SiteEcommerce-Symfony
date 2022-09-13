@@ -80,10 +80,6 @@ class Commande
      */
     private $panier;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="commande")
-     */
-    private $articles;
 
     public function __construct()
     {
@@ -228,45 +224,6 @@ class Commande
     public function setLivraison(?Livraison $livraison): self
     {
         $this->livraison = $livraison;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Article>
-     */
-    public function getArticles(): Collection
-    {
-        return $this->articles;
-    }
-
-    public function addArticle(Article $article): self
-    {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->addCommande($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): self
-    {
-        if ($this->articles->removeElement($article)) {
-            $article->removeCommande($this);
-        }
-
-        return $this;
-    }
-
-    public function getPanier(): ?Panier
-    {
-        return $this->panier;
-    }
-
-    public function setPanier(?Panier $panier): self
-    {
-        $this->panier = $panier;
 
         return $this;
     }

@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Modification des produits {% endblock %}
+
+{% block body %}
+
+
+	<h1 class="text-center my-4">Modification des produits</h1>
+
+
+	<div class="row">
+		<div class="col-11 mx-auto my-4">
+
+					{{ form_start(form) }}
+
+						<div class="row">
+
+					{# <div class="col-4">{{ form_row(form.roles) }}</div> #}
+
+					{# {{ form_row(form.created_at | date('d/m/Y') ) }}
+
+					{{ form_row(form.updatedAt | date('d/m/Y') ) }} #}
+
+					{{ form_end(form) }}
+
+			</div>
+		</div>
+
+	{% endblock %}
