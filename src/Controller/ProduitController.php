@@ -27,6 +27,13 @@ class ProduitController extends AbstractController
      */
     public function showProduit(ArticleRepository $ArticleRepository, CategorieRepository $CategorieRepository): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         return $this->render("admin_produit/show_produit.html.twig", [
             'articles' => $ArticleRepository->findBy(['deletedAt' => null]),
             'categories' => $CategorieRepository->findBy(['deletedAt' => null]),
@@ -39,6 +46,13 @@ class ProduitController extends AbstractController
      */
     public function createProduit(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         $produit = new Article();
 
         $form = $this->createForm(ProduitFormType::class, $produit)
@@ -74,6 +88,13 @@ class ProduitController extends AbstractController
      */
     public function updateProduit(Article $article, EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         $originalimage = $article->getImage();
 
         $form = $this->createForm(ProduitFormType::class, $article, [
@@ -119,6 +140,7 @@ class ProduitController extends AbstractController
      */
     private function handleFile(Article $article, UploadedFile $image, SluggerInterface $slugger): void
     {
+        
         # guessExtension() devine l'extension du fichier À PARTIR du MimeType du fichier
         #   => rappel : NE PAS confondre extension ET MimeType !
         $extension = '.' . $image->guessExtension();

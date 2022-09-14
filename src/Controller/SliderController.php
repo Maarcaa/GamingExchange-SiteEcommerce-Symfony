@@ -42,6 +42,13 @@ class SliderController extends AbstractController
      */
     public function createSlider(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         $slider = new Slider();
 
         $form = $this->createForm(SliderFormType::class, $slider)
@@ -91,6 +98,13 @@ class SliderController extends AbstractController
      */
     public function showSliderId(Slider $slider): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         return $this->render("admin_slider/show_slider_id.html.twig", [
             'slider' => $slider
         ]);
@@ -101,6 +115,12 @@ class SliderController extends AbstractController
      */
     public function updateSlider(Slider $slider, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
 
         $form = $this->createForm(SliderFormType::class, $slider)->handleRequest($request);
 
@@ -155,6 +175,12 @@ class SliderController extends AbstractController
      */
     public function hardDeleteSlider(Slider $slider, EntityManagerInterface $entityManager): RedirectResponse
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
 
         $entityManager->remove($slider);
         $entityManager->flush();

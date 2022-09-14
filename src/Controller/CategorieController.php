@@ -52,6 +52,13 @@ class CategorieController extends AbstractController
      */
     public function createcategorie(Request $request, EntityManagerInterface $entityManager): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         $categorie = new Categorie();
 
         $form = $this->createForm(CategorieFormType::class, $categorie)
@@ -81,6 +88,13 @@ class CategorieController extends AbstractController
      */
     public function updatecategorie(categorie $categorie, Request $request, EntityManagerInterface $entityManager): Response
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+
         $form = $this->createForm(categorieFormType::class, $categorie)
             ->handleRequest($request);
 
@@ -107,6 +121,13 @@ class CategorieController extends AbstractController
      */
     public function hardDeletecategorie(categorie $categorie, EntityManagerInterface $entityManager): RedirectResponse
     {
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+        
         $entityManager->remove($categorie);
         $entityManager->flush();
 
