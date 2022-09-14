@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'un slide
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="text-center my-4">Création d'un slide</h1>
+
+	<div class="row">
+		<div class="col-6 mx-auto">{% include 'include/_flashes.html.twig' %}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-11 mx-auto my-4">
+
+			{{ form_start(form) }}
+
+			<div class="row">
+
+				<div class="col-5">{{ form_row(form.photo) }}</div>
+				<div class="col-5">{{ form_row(form.ordre) }}</div>
+
+
+				{{ form_end(form) }}
+
+
+			</div>
+		</div>
+
+	{% endblock %}

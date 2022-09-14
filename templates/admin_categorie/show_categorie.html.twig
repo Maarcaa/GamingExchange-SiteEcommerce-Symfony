@@ -40,9 +40,9 @@
                 <td>{{ categorie.createdAt | date('d/m/Y') }}</td>
                 <td>{{ categorie.updatedAt | date('d/m/Y') }}</td>
                 <td>
-                    <a href="" title="Voir la catégorie" class="text-center align-middle text-primary"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{ path('show_categorie_{id}', {'id': categorie.id}) }}" title="Voir la catégorie" class="text-center align-middle text-primary"><i class="fa-solid fa-eye"></i></a>
                     <a href="{{ path('update_categorie', {'id': categorie.id}) }}" title="Modifier la categorie" class="text-center align-middle text-warning"><i class="fa-solid fa-edit"></i></a>
-                    <a href="{{ path('hard_delete_categorie', {'id': categorie.id} ) }}" title="Supprimer la categorie" class="text-center align-middle text-danger" onclick="return confirm('Voulez-vous archiver ce produit ?\n Si oui, il sera off-line.')"><i class="fa-solid fa-trash"></i></a>
+                    <a href="{{ path('hard_delete_categorie', {'id': categorie.id} ) }}" title="Supprimer la categorie" class="text-center align-middle text-danger" onclick="return confirm('Voulez-vous supprimer cette catégorie définitivement?')"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
 

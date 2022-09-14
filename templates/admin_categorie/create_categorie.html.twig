@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un catégorie{% endblock %}
+
+{% block body %}
+
+    {% if categorie is defined %}
+        <h1 class="text-center my-3">Modifier la catégorie {{ categorie.marque }}</h1>
+    {% else %}
+        <h1 class="text-center my-3">Ajouter une catégorie</h1>
+    {% endif %}
+
+    <a href="{{ path('show_categorie') }}" class="text-dark btn btn-lg btn-primary"><i class="fa-solid fa-arrow-left"></i> Retour aux catégories</a>
+
+    <div class="row">
+        <div class="col-8 mx-auto">
+            {{ form_start(form) }}
+
+            <div class="row">
+                <div class="col-12">{{ form_row(form.marque) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">{{ form_row(form.famille) }}</div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

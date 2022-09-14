@@ -21,7 +21,7 @@ class SliderController extends AbstractController
     /**
      * @Route("/slider", name="show_slider", methods={"GET|POST"})
      */
-    public function showSlider(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function showSlider(Request $request, EntityManagerInterface $entityManager): Response
     {
         try {
             $this->denyAccessUnLessGranted('ROLE_ADMIN');
@@ -30,57 +30,61 @@ class SliderController extends AbstractController
             return $this->redirectToRoute('default_home');
         }
 
-        $form = $this->createForm(SliderFormType::class)->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $slider = new Slider();
-
-            $slider->setCreatedAt(new DateTimeImmutable());
-            $slider->setUpdatedAt(new DateTime());
-
-            /** @var UploadedFile $photo */
-            $photo = $form->get('photo')->getData();
-
-            if ($photo) {
-                $extension = '.' . $photo->guessExtension();
-                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-
-
-                $newFilename = $safeFilename . '_' . uniqid() . $extension;
-
-                try {
-                    $photo->move($this->getParameter('uploads_dir'), $newFilename);
-                    $slider->setPhoto($newFilename);
-                    $slider->setOrdre($form->get('ordre')->getData());
-                } catch (FileException $exception) {
-                    $this->addFlash('erreur', 'Votre photo n\'a pas été téléchargé');
-                }
-            } #end if photo
-
-            $entityManager->persist($slider);
-            $entityManager->flush();
-
-            $this->addFlash('success', "Le slider est en ligne avec succès !");
-            return $this->redirectToRoute('show_slider');
-        }
 
         $sliders = $entityManager->getRepository(Slider::class)->findAll();
         return $this->render("admin_slider/show_slider.html.twig", [
-            'sliders' => $sliders,
-            'form' => $form->createView()
+            'sliders' => $sliders
         ]);
     }
 
     /**
-     * @Route("/ajouter-un-slider", name="create_slider", methods={"GET|POST"})
+     * @Route("/ajouter-un-slider", name="create_slide", methods={"GET|POST"})
      */
     public function createSlider(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $slider = new Slider();
 
-        dd('CETTE ACTION EST VIDE. voir le fichier : ' . __FILE__);
-    } # end function createslide
+        $form = $this->createForm(SliderFormType::class, $slider)
+            ->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $slider->setCreatedAt(new DateTimeImmutable());
+            $slider->setUpdatedAt(new DateTime());
+
+                /** @var UploadedFile $photo */
+                $photo = $form->get('photo')->getData();
+
+                if ($photo) {
+                    $extension = '.' . $photo->guessExtension();
+                    $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+    
+    
+                    $newFilename = $safeFilename . '_' . uniqid() . $extension;
+    
+                    try {
+                        $photo->move($this->getParameter('uploads_dir'), $newFilename);
+                        $slider->setPhoto($newFilename);
+                        $slider->setOrdre($form->get('ordre')->getData());
+                    } catch (FileException $exception) {
+                        $this->addFlash('erreur', 'Votre photo n\'a pas été téléchargé');
+                    }
+                } #end if photo
+
+            $entityManager->persist($slider);
+            $entityManager->flush();
+
+            $this->addFlash('success', "Le slider a bien été ajouté");
+            return $this->redirectToRoute('show_slider');
+        }
+
+        $sliders = $entityManager->getRepository(Slider::class)->findAll();
+        return $this->render("admin_slider/create_slider.html.twig", [
+            'form' => $form->createView(),
+            'sliders' => $sliders,
+        ]);
+    }
 
     /**
      * @Route("voir_slider_{id}", name="show_slider_{id}", methods={"GET"})

@@ -1,31 +1,33 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Ajouter un catégorie{% endblock %}
+{% block title %}Modification des catégories
+{% endblock %}
 
 {% block body %}
 
-    {% if categorie is defined %}
-        <h1 class="text-center my-3">Modifier la catégorie {{ categorie.marque }}</h1>
-    {% else %}
-        <h1 class="text-center my-3">Ajouter une catégorie</h1>
-    {% endif %}
 
-    <a href="{{ path('show_categorie') }}" class="text-dark"><i class="fa-solid fa-arrow-left"></i> Retour aux catégories</a>
+	<h1 class="text-center my-4">Modification des catégories</h1>
 
-    <div class="row">
-        <div class="col-8 mx-auto">
-            {{ form_start(form) }}
+	<a href="{{ path('show_categorie') }}" class="text-dark btn btn-lg btn-primary">
+		<i class="fa-solid fa-arrow-left"></i>
+		Retour aux catégories</a>
 
-            <div class="row">
-                <div class="col-12">{{ form_row(form.marque) }}</div>
-            </div>
+	<div class="row">
+		<div class="col-11 mx-auto my-4">
 
-            <div class="row">
-                <div class="col-12">{{ form_row(form.famille) }}</div>
-            </div>
+			{{ form_start(form) }}
 
-            {{ form_end(form) }}
-        </div>
-    </div>
+			<div class="row">
+
+				{# <div class="col-4">{{ form_row(form.roles) }}</div> #}
+
+				{# {{ form_row(form.created_at | date('d/m/Y') ) }}
+				
+									{{ form_row(form.updatedAt | date('d/m/Y') ) }} #}
+
+			{{ form_end(form) }}
+
+		</div>
+	</div>
 
 {% endblock %}

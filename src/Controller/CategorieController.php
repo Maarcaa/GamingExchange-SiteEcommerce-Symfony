@@ -38,6 +38,16 @@ class CategorieController extends AbstractController
     }
 
     /**
+     * @Route("voir_categorie_{id}", name="show_categorie_{id}", methods={"GET"})
+     */
+    public function showSliderId(Categorie $categorie): Response
+    {
+        return $this->render("admin_categorie/show_categorie_id.html.twig", [
+            'categorie' => $categorie
+        ]);
+    }
+
+    /**
      * @Route("/ajouter-une-categorie", name="create_categorie", methods={"GET|POST"})
      */
     public function createcategorie(Request $request, EntityManagerInterface $entityManager): Response
@@ -59,8 +69,10 @@ class CategorieController extends AbstractController
             return $this->redirectToRoute('show_categorie');
         }
 
-        return $this->render("admin_categorie/show_categorie.html.twig", [
-            'form' => $form->createView()
+        $categories = $entityManager->getRepository(Categorie::class)->findAll();
+        return $this->render("admin_categorie/create_categorie.html.twig", [
+            'form' => $form->createView(),
+            'categories' => $categories,
         ]);
     }
 
@@ -83,9 +95,10 @@ class CategorieController extends AbstractController
             return $this->redirectToRoute('show_categorie');
         }
 
-        return $this->render("admin_categorie/categorie.html.twig", [
+        $categories = $entityManager->getRepository(Categorie::class)->findAll();
+        return $this->render("admin_categorie/update_categorie.html.twig", [
             'form' => $form->createView(),
-            'categorie' => $categorie
+            'categories' => $categories
         ]);
     }
 

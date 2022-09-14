@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visualisation de la catégorie
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="text-center my-4">Visualisation de la categorie</h1>
+
+    <a href="{{ path('show_categorie') }}" class="text-dark btn btn-lg btn-primary"><i class="fa-solid fa-arrow-left"></i> Retour aux catégories</a>
+
+	<div class="row">
+		<div class="col-12 mx-auto my-4">
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Marque</th>
+						<th>Famille</th>
+						<th>Créé le</th>
+						<th>Modifié le</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ categorie.id }}</td>
+						<td>{{ categorie.marque }}</td>
+						<td>{{ categorie.famille }}</td>
+						<td>{{ categorie.createdAt | date('d/m/Y') }}</td>
+						<td>{{ categorie.updatedAt | date('d/m/Y') }}</td>
+						<td>
+							<a href=" {{ path('update_categorie', {"id": categorie.id}) }}" class="" title="Modifier la categorie">
+								<i class="fa fa-edit"></i>
+							</a>
+							<a href="{{ path('hard_delete_categorie', {"id" : categorie.id}) }}" class="text-danger" title="Supprimer la categorie" onclick="return confirm('Voulez-vous supprimer cette categorie ?')">
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

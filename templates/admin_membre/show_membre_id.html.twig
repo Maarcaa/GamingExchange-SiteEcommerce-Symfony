@@ -1,51 +1,42 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %} Gestion des user {% endblock %}
+{% block title %}Visualisation de la catégorie
+{% endblock %}
 
 {% block body %}
 
-<h1 class="text-center my-4">Gestion des users</h1>
+	<h1 class="text-center my-4">Visualisation de la categorie</h1>
+
+<a href="{{ path('show_membre') }}" class="text-dark btn btn-lg btn-primary"><i class="fa-solid fa-arrow-left"></i> Retour aux membres</a>
 
 	<div class="row">
-		<div
-			class="col-6 mx-auto">{% include 'include/_flashes.html.twig' %}
-		</div>
-	</div>
+		<div class="col-12 mx-auto my-4">
 
-<div class="row">
-	<div class="col-12 mx-auto my-4">
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th>#</th>
-                    <th>Pseudo</th>
-					<th>Email</th>
-					<th>Roles</th>
-					
-					<th>Prénom</th>
-                    <th>Nom</th>
-					<th>Sexe</th>
-					<th>Adresse</th>
-					<th>Code Postal</th>
-					<th>Ville</th>
-					<th>Téléphone</th>
-					<th>Date de création</th>
-					<th>Date de modification</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for user in users %}
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Pseudo</th>
+						<th>Email</th>
+						<th>Rôle</th>
+						<th>Prénom</th>
+						<th>Nom</th>
+						<th>Sexe</th>
+						<th>Adresse</th>
+						<th>Code postal</th>
+						<th>Ville</th>
+						<th>Téléphone</th>
+						<th>Créé le </th>
+						<th>Modifié le</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
 					<tr>
 						<td>{{ user.id }}</td>
                         <td>{{ user.pseudo }}</td>
 						<td>{{ user.email }}</td>
-						<td>{{ user.roles | first }}
-							{# {% for role in user.roles %}
-							{{role}}
-							{% endfor %} #}
-						</td>
+						<td>{{ user.roles | first }}</td>
 						<td>{{ user.prenom }}</td>
 						<td>{{ user.nom }}</td>
 						<td>{{ user.sexe }}</td>
@@ -56,7 +47,7 @@
 						<td>{{ user.createdAt | date('d/m/Y') }}</td>
 						<td>{{ user.updatedAt | date('d/m/Y') }}</td>
 						<td>
-
+						
 							<a href=" {{ path('update_membre', {"id": user.id}) }}" class="text-info" title="Modifier le user">
 								<i class="fa fa-edit"></i>
 							</a>
@@ -65,13 +56,8 @@
 							</a>
 						</td>
 					</tr>
-				{% endfor %}
 			</tbody>
-		</table>
-
+			</table>
+		</div>
 	</div>
-</div></div>
-
-
-
 {% endblock %}

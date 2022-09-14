@@ -35,6 +35,16 @@ class AdminMembreController extends AbstractController
     }
 
 
+       /**
+     * @Route("voir_membre_{id}", name="show_membre_{id}", methods={"GET"})
+     */
+    public function showSliderId(User $user): Response
+    {
+        return $this->render("admin_membre/show_membre_id.html.twig", [
+            'user' => $user
+        ]);
+    }
+
     /**
      * @Route("/modifier-membre_{id}", name="update_membre", methods={"GET|POST"})
      */

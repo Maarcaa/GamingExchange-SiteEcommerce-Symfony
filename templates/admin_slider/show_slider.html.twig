@@ -8,6 +8,12 @@
 	<h1 class="text-center my-4">Gestion des Slides</h1>
 
 	<div class="row">
+        <div class="col-12 text-center">
+            <a href="{{ path('create_slide') }}" class="btn btn-lg btn-primary">Ajouter un slide <i class="fa-solid fa-circle-plus"></i></a>
+        </div>
+    </div>
+
+	<div class="row">
 		<div class="col-6 mx-auto">{% include 'include/_flashes.html.twig' %}
 		</div>
 	</div>
@@ -60,22 +66,7 @@
 	</div>
 </div>
 
-	<div class="row">
-		<div class="col-11 mx-auto my-4">
-
-					{{ form_start(form) }}
-
-					<div class="row">
-
-					<div class="col-5">{{ form_row(form.photo) }}</div>
-					<div class="col-5">{{ form_row(form.ordre) }}</div>
-
-
-					{{ form_end(form) }}
-
-
-			</div>
-		</div>
+	
 </div>
 
 
