@@ -13,7 +13,7 @@
         </div>
 
 <!-- CAROUSEL -->
-	<div class="container">
+	<div class="container mx-auto">
 		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
 			<div class="carousel-indicators">
 				<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -58,16 +58,18 @@
 <!-- FIN CAROUSEL -->
 
 
-<div class="row mb-3 d-flex justify-content-around col-6 mx-auto">
+<div class="row d-flex justify-content-around col-8 mx-auto">
 {% for article in articles %}
 
-        <div class="col-3">
+        <div class="col-2 mt-5 mb-5 text-center">
             <div class="card" style="width: 18rem;">
                 <img src="{{ asset('uploads/' ~ article.image) }}" class="card-img-top" alt="une photo" style="object-fit: contain;" width="150" height="220">
                 <div class="card-body">
                     <h5 class="card-title">{{ article.titre }}</h5>
                     <p class="card-text">{{ article.description | length > 31 ? article.description | slice(0,31) ~ '...' : article.description }}</p>
-                    {# <a href="{{ path('panier_add', {'id': article.id}) }}" class="col-12 btn btn-warning text-center"><i class="fa-solid fa-cart-plus"></i></a> #}
+                    <a href="{{ path('panier_add', {'id': article.id}) }}" class="col-12 btn btn-warning text-center"><i class="fa-solid fa-cart-plus"></i></a>
+					<h5 class="card-title">Prix : {{ article.prix }} €</h5>
+					<h5 class="card-title"> Stock : {{ article.quantiteStock }} </h5>
                 </div>
             </div>
         </div>

@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,29 +20,14 @@ class Commande
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date_commande;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $montant_commande;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mode_paiement;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $commentaire_commande;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $article;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -76,10 +61,19 @@ class Commande
     private $livraison;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="commandes")
+     * @ORM\Column(type="integer")
      */
-    private $panier;
+    private $Quantite;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $etat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="commande", cascade={"persist", "remove"})
+     */
+    private $articles;
 
     public function __construct()
     {
@@ -89,18 +83,6 @@ class Commande
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDateCommande(): ?\DateTimeInterface
-    {
-        return $this->date_commande;
-    }
-
-    public function setDateCommande(\DateTimeInterface $date_commande): self
-    {
-        $this->date_commande = $date_commande;
-
-        return $this;
     }
 
     public function getMontantCommande(): ?float
@@ -115,18 +97,6 @@ class Commande
         return $this;
     }
 
-    public function getModePaiement(): ?string
-    {
-        return $this->mode_paiement;
-    }
-
-    public function setModePaiement(string $mode_paiement): self
-    {
-        $this->mode_paiement = $mode_paiement;
-
-        return $this;
-    }
-
     public function getCommentaireCommande(): ?string
     {
         return $this->commentaire_commande;
@@ -135,18 +105,6 @@ class Commande
     public function setCommentaireCommande(?string $commentaire_commande): self
     {
         $this->commentaire_commande = $commentaire_commande;
-
-        return $this;
-    }
-
-    public function getArticle(): ?string
-    {
-        return $this->article;
-    }
-
-    public function setArticle(string $article): self
-    {
-        $this->article = $article;
 
         return $this;
     }
@@ -227,4 +185,59 @@ class Commande
 
         return $this;
     }
+
+    public function getQuantite(): ?int
+    {
+        return $this->Quantite;
+    }
+
+    public function setQuantite(int $Quantite): self
+    {
+        $this->Quantite = $Quantite;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getCommande() === $this) {
+                $article->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

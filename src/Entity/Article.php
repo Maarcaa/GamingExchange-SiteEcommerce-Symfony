@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -75,6 +75,10 @@ class Article
      */
     private $panier;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="articles")
+     */
+    private $commande;
 
     public function __construct()
     {
@@ -232,6 +236,18 @@ class Article
     public function setPanier(?Panier $panier): self
     {
         $this->panier = $panier;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg text-deco-none backgroundred align-middle">
+<nav class="navbar navbar-expand-lg text-deco-none backgroundred align-middle fixed-top">
 	<div class="container-fluid">
 		<a class="navbar-brand text-white navhover" href="{{ path('default_home') }}">GamingExchange.fr</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,6 +15,9 @@
 
 			{% if not app.user %}
 				<ul class="navbar-nav ms-auto">
+					<li class="me-5">
+						<a href="{{ path('show_panier') }}" class="btn btn-warning"><i class="fa-solid fa-cart-arrow-down"></i></a>
+					</li>
 					<li>
 						<a class="nav-link text-white navhover" href="{{ path('user_register') }}">S'inscrire</a>
 					</li>
@@ -24,7 +27,10 @@
 
 				{% else %}
 					<ul class="navbar-nav ms-auto">
-					{% if is_granted("ROLE_ADMIN") %}
+						{% if is_granted("ROLE_ADMIN") %}
+						<li class="me-5">
+						<a href="{{ path('show_panier') }}" class="btn btn-warning"><i class="fa-solid fa-cart-arrow-down"></i></a>
+					</li>
 							<li class="nav-item dropdown navhover:hover">
 								<a class="nav-link dropdown-toggle text-primary  navhover:hover text-white navhover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 									Espace Admin
@@ -50,7 +56,7 @@
 
 						{% endif %}
 						<a class="nav-link text-white navhover" href="{{ path('show_profile') }}">Espace perso</a>
-						
+
 					{% endif %}
 				</ul>
 			</div>

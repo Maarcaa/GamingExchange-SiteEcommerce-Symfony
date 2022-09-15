@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center my-3">Mon panier</h1>
+
+    <div class="row">
+        <div class="col-10 mx-auto">
+            {% include 'include/_flashes.html.twig' %}
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-10 mx-auto">
+
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">article</th>
+                    <th class="text-center">Quantité</th>
+                    <th class="text-center">P.U</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for item in app.session.get('panier') %}
+{#                    {% if key is not same as 'total' %}#}
+                    <tr>
+                        <td class="align-middle text-center">{{ item['article'].id }}</td>
+                        <td class="align-middle text-center">
+                            <div>{{ item['article'].titre }}</div>
+                        {% if item['article'].image is not null %}
+                            <img src="{{ asset('uploads/' ~ item['article'].image) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
+                        {% else %}
+                            <img src="" alt="pas de photo" width="250" height="120" style="object-fit: contain;">
+                        {% endif %}
+                        </td>
+                        <td class="align-middle text-center">{{ item['quantity'] }}</td>
+                        <td class="align-middle text-center">{{ item['article'].prix }}€</td>
+                        <td class="align-middle text-center">{{ item['article'].prix * item['quantity'] }}€</td>
+                        <td class="align-middle text-center">
+                            <a href="{{ path('panier_remove', {'id': item['article'].id}) }}" class="btn btn-sm btn-danger"><i class="fa-solid fa-circle-minus" title="Supprimer ce article du panier"></i></a>
+                        </td>
+                    </tr>
+{#                    {% endif %}#}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center bg-warning">Votre panier est vide</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="align-middle text-center">Montant total : </td>
+                        <td class="align-middle text-center">{{ total }}€</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="d-flex justify-content-around">
+                <a href="{{ path('empty_panier') }}" class="btn btn-danger col-2 text-center">Vider mon panier</a>
+                  
+                <a href="{{ path('panier_validate') }}" class="btn btn-success col-2 text-center">Valider mon panier</a>
+          </div>
+        </div>
+    </div>
+
+{% endblock %}
