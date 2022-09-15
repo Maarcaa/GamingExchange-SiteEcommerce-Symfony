@@ -12,10 +12,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/admin")
@@ -40,6 +42,15 @@ class ProduitController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("voir_produit_{id}", name="show_produit_{id}", methods={"GET"})
+     */
+    public function showProduitId(Article $article): Response
+    {
+        return $this->render("admin_produit/show_produit_id.html.twig", [
+            'article' => $article
+        ]);
+    }
 
     /**
      * @Route("/creer-un-produit", name="create_produit", methods={"GET|POST"})
@@ -122,7 +133,7 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('show_produit');
         }
 
-        return $this->render('admin_produit/form_produit.html.twig', [
+        return $this->render('admin_produit/update_produit.html.twig', [
             'form' => $form->createView(),
             'article' => $article,
         ]);
@@ -157,40 +168,22 @@ class ProduitController extends AbstractController
         } // end catch()
     }
 
-    /**
-     * @Route("/archiver-un-produit/{id}", name="soft_delete_produit", methods={"GET"})
-     * @param Produit $produit
-     * @param EntityManagerInterface $entityManager
-     * @return Response
+/**
+     * @Route("/supprimer-un-produit/{id}", name="hard_delete_produit", methods={"GET"})
      */
-    public function softDeleteProduit(Article $article, EntityManagerInterface $entityManager): Response
+    public function hardDeleteProduit(Article $article, EntityManagerInterface $entityManager): RedirectResponse
     {
-        // setDeletedAt() nous permet de créer une bascule (on/off) sur le produit pour afficher en ligne ou le mettre dans la poubelle.
-            # CEPENDANT ! En BDD la ligne existe toujours, l'objet Produit n'est pas supprimé.
-        $article->setDeletedAt(new DateTimeImmutable());
-
-        $entityManager->persist($article);
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette partie du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
+        
+        $entityManager->remove($article);
         $entityManager->flush();
 
-        $this->addFlash('success', "Le produit " . $article->getTitre() ." a bien été archivé.");
-        return $this->redirectToRoute('show_produit');
-    }
-
-    /**
-     * @Route("/restaurer-un-produit/{id}", name="restore_produit", methods={"GET"})
-     * @param Produit $produit
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function restoreProduit(Article $article, EntityManagerInterface $entityManager): Response
-    {
-        // côté miroir de la bascule (on/off) qui permet de restaurer en ligne le Produit.
-        $article->setDeletedAt(null);
-
-        $entityManager->persist($article);
-        $entityManager->flush();
-
-        $this->addFlash('success', "Le produit " . $article->getTitre() ." a bien été restauré.");
+        $this->addFlash('success', 'Le produit a bien été supprimé définitivement de la base');
         return $this->redirectToRoute('show_produit');
     }
 

@@ -42,17 +42,15 @@
                 <td>{{ article.titre }}</td>
                 <td>{{ article.description }}</td>
                 <td>{{ article.prix }}</td>€
-                <td><img src="{{ asset('uploads/' ~ article.image) }}" alt="image de article" width="80" height="58" style="object-fit: contain;"></td>
+                <td><img src="{{ asset('uploads/' ~ article.image) }}" alt="image de article" width="160" height="116" style="object-fit: contain;"></td>
                 <td>{{ article.quantiteStock }}</td>
-                    {% for  categorie in categories %}
-                             <td>{{ categorie.marque }}</td>
-                    {% endfor %}
+                <td>{{ article.categorie.marque }}</td>
                 <td>{{ article.createdAt | date('d/m/Y') }}</td>
                 <td>{{ article.updatedAt | date('d/m/Y') }}</td>
                 <td>
-                    <a href="" title="Voir le produit" class="text-center align-middle text-primary"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{ path('show_produit_{id}', {'id': article.id}) }}" title="Voir le produit" class="text-center align-middle text-primary"><i class="fa-solid fa-eye"></i></a>
                     <a href="{{ path('update_produit', {'id': article.id}) }}" title="Modifier le produit" class="text-center align-middle text-warning"><i class="fa-solid fa-edit"></i></a>
-                    <a href="{{ path('soft_delete_produit', {'id': article.id} ) }}" title="Archiver le produit" class="text-center align-middle text-danger" onclick="return confirm('Voulez-vous archiver ce article ?\n Si oui, il sera off-line.')"><i class="fa-solid fa-trash"></i></a>
+                    <a href="{{ path('hard_delete_produit', {'id': article.id} ) }}" title="Supprimer le produit" class="text-center align-middle text-danger" onclick="return confirm('Voulez-vous archiver ce article ?\n Si oui, il sera off-line.')"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
 

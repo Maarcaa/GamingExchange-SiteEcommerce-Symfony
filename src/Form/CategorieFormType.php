@@ -17,9 +17,6 @@ class CategorieFormType extends AbstractType
             ->add('marque', TextType::class, [
                 'label' => 'Marque',
             ])
-            ->add('famille', TextType::class, [
-                'label' => 'Famille de produits',
-            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider',
                 'validate' => false,

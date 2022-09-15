@@ -25,11 +25,6 @@ class Categorie
     private $marque;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $famille;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
@@ -67,18 +62,6 @@ class Categorie
     public function setMarque(string $marque): self
     {
         $this->marque = $marque;
-
-        return $this;
-    }
-
-    public function getFamille(): ?string
-    {
-        return $this->famille;
-    }
-
-    public function setFamille(string $famille): self
-    {
-        $this->famille = $famille;
 
         return $this;
     }

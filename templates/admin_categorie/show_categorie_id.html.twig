@@ -12,12 +12,11 @@
 	<div class="row">
 		<div class="col-12 mx-auto my-4">
 
-			<table class="table">
-				<thead>
+			<table class="table ">
+				<thead class="table-dark">
 					<tr>
 						<th>#</th>
 						<th>Marque</th>
-						<th>Famille</th>
 						<th>Créé le</th>
 						<th>Modifié le</th>
 						<th>Actions</th>
@@ -27,7 +26,6 @@
 					<tr>
 						<td>{{ categorie.id }}</td>
 						<td>{{ categorie.marque }}</td>
-						<td>{{ categorie.famille }}</td>
 						<td>{{ categorie.createdAt | date('d/m/Y') }}</td>
 						<td>{{ categorie.updatedAt | date('d/m/Y') }}</td>
 						<td>
