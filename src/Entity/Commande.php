@@ -45,12 +45,6 @@ class Commande
     private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\OneToOne(targetEntity=Facture::class, mappedBy="commande", cascade={"persist", "remove"})
      */
     private $facture;
@@ -74,6 +68,12 @@ class Commande
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="commande", cascade={"persist", "remove"})
      */
     private $articles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -141,18 +141,6 @@ class Commande
     public function setDeletedAt(\DateTimeImmutable $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -236,6 +224,18 @@ class Commande
                 $article->setCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

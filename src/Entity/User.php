@@ -88,11 +88,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $deletedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user")
-     */
-    private $commandes;
-
-    /**
      * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="user")
      */
     private $commentaires;
@@ -101,6 +96,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=10)
      */
     private $sexe;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user", cascade={"persist"})
+     */
+    private $commandes;
 
     public function __construct()
     {
@@ -318,36 +318,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
-
-    public function addCommande(Commande $commande): self
-    {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes[] = $commande;
-            $commande->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): self
-    {
-        if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
-            if ($commande->getUser() === $this) {
-                $commande->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Commentaire>
      */
     public function getCommentaires(): Collection
@@ -388,4 +358,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getUser() === $this) {
+                $commande->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

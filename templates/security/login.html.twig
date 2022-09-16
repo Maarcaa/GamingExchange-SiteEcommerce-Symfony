@@ -14,28 +14,28 @@
         </div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
+    <h1 class="h3 mb-3 font-weight-normal mt-5 text-center">Connectez-vous</h1>
+    <div class="row">
+    <div class="col-4 m-auto">
+    <label for="inputEmail" class="mt-5">Email</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
+    <label for="inputPassword" class="mt-5">Mot de passe</label>
+    <input type="password" name="password" id="inputPassword" class="form-control  mb-5" autocomplete="current-password" required>
+</div>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+    
 
-        <div class="checkbox mb-3">
+        <div class="checkbox mb-3 text-center">
             <label>
                 <input type="checkbox" name="_remember_me"> Remember me
             </label>
         </div>
-    #}
+   
 
-    <button class="btn btn-lg btn-primary" type="submit">
+    <button class="btn btn-lg btn-primary col-2 mx-auto" type="submit">
         Sign in
     </button>
 </form>

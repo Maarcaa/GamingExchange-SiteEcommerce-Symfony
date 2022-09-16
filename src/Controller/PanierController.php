@@ -99,46 +99,45 @@ class PanierController extends AbstractController
 
     /**
      * @Route("/valider-mon-panier", name="panier_validate", methods={"GET"})
-     * @param SessionInterface $session
-     * @return Response
      */
-    public function validate(SessionInterface $session, EntityManagerInterface $entityManager): Response
+    public function validateCommande(SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
         $panier = $session->get('panier', []);
 
         if(empty($panier)) {
             $this->addFlash('warning', 'Votre panier est vide.');
             return $this->redirectToRoute('show_panier');
-        } else {
-            $commande = new Commande();
-            $user = $entityManager->getRepository(User::class)->find($this->getUser());
-
-            $commande->setCreatedAt(new DateTimeImmutable());
-            $commande->setUpdatedAt(new DateTime());
-            $commande->setEtat('en cours');
-            $commande->setUser($user);
-
-            $total = 0;
-
-            foreach($panier as $item){
-                $totalItem = $item['article']->getPrix() * $item['quantity'];
-                $total += $totalItem;
-
-                $commande->addArticle($item['article']);
-            }
-
-            $commande->setMontantCommande($total);
-            $commande->setQuantite(count($panier));
-
-            
-            // $entityManager->clear();
-            // $entityManager->persist($commande);
-            // $entityManager->flush();    
-
-            $session->remove('panier');
-
-            $this->addFlash('success', "Félicitation, votre commande est en cours. Vous pouvez la retrouver dans Mes Commandes.");
-            return $this->redirectToRoute('show_profile');
         }
-    }
+
+        $commande = new Commande();
+//        $user =
+
+        $commande->setCreatedAt(new DateTimeImmutable());
+        $commande->setUpdatedAt(new DateTime());
+
+        $total = 0;
+
+
+        foreach($panier as $item) {
+            $totalItem = $item['article']->getPrix() * $item['quantity'];
+            $total += $totalItem;
+
+            $commande->setQuantite($item['quantite']);
+        }
+
+
+
+        $commande->setEtat('en préparation');
+        $commande->setUser($this->getUser());
+        $commande->setMontantCommande($total);
+
+        $entityManager->persist($commande);
+        $entityManager->flush();
+
+        $session->remove('panier');
+
+        $this->addFlash('success', "Bravo, votre commande est prise en compte et en préparation. Vous pouvez la retrouver dans Mes Commandes.");
+        return $this->redirectToRoute('show_profile');
+
+    }// end function validate()
 }
