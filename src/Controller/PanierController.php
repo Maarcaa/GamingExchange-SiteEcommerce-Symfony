@@ -122,14 +122,16 @@ class PanierController extends AbstractController
             $totalItem = $item['article']->getPrix() * $item['quantity'];
             $total += $totalItem;
 
-            $commande->setQuantite($item['quantite']);
+            $commande->setQuantite($item['quantity']);
         }
-
 
 
         $commande->setEtat('en préparation');
         $commande->setUser($this->getUser());
         $commande->setMontantCommande($total);
+        
+        $commande->setArticle($item['article']->getTitre());
+        $commande->setDescription($item['article']->getDescription());
 
         $entityManager->persist($commande);
         $entityManager->flush();

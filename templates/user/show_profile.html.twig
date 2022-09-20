@@ -27,6 +27,7 @@
                     <p class="card-text">Code Postal : {{ app.user.codepostal }}</p>
                     <p class="card-text">Ville : {{ app.user.ville }}</p>
                     <p class="card-text">Téléphone : {{ app.user.telephone }}</p>
+                    <a href="{{ path('show_commande') }}" class="btn btn-warning">Voir mes commades</a>
                     <a href="{{ path('change_password') }}" class="btn btn-warning">Changer mon mot de passe</a>
                     <a class="nav-link text-black navhover" href="{{ path('app_logout') }}">
 						<i class="fa-solid fa-right-from-bracket text-black navhover"></i> Se déconnecter

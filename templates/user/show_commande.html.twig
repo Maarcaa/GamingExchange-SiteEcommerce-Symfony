@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="text-center my-3">Mes commandes</h1>
+
+	<table class="table my-3">
+		<thead class="table-dark">
+			<tr>
+				<th>Id</th>
+				<th>Article</th>
+				<th>Description</th>
+				<th>Quantité</th>
+				<th>Montant</th>
+				<th>Photo</th>
+				<th>Créé le</th>
+				<th>Modifié le</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			{% for commande in commandes %}
+
+				<tr>
+					<td>{{ commande.id }}</td>
+					<td>{{ commande.titre }}</td>
+					<td>{{ commande.description }}</td>
+					<td>{{ commande.quantite }}</td>
+					<td>{{ commande.montantCommande }}</td>€
+					<td><img src="{{ asset('uploads/' ~ commande.image) }}" alt="image de commande" width="160" height="116" style="object-fit: contain;"></td>
+					<td>{{ commande.createdAt | date('d/m/Y') }}</td>
+					<td>{{ commande.updatedAt | date('d/m/Y') }}</td>
+				</tr>
+
+			{% else %}
+				<tr>
+					<td colspan="11" class="bg-warning text-center">Aucune commande en cours</td>
+				</tr>
+			{% endfor %}
+
+		</tbody>
+	</table>
+
+{% endblock %}

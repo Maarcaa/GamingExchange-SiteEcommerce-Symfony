@@ -65,8 +65,11 @@
             </table>
             <div class="d-flex justify-content-around">
                 <a href="{{ path('empty_panier') }}" class="btn btn-danger col-2 text-center">Vider mon panier</a>
-                  
-                <a href="{{ path('panier_validate', {"id" : app.user.id}) }}" class="btn btn-success col-2 text-center">Valider mon panier</a>
+                  {% if not app.user %}
+                <a href="{{ path('panier_validate') }}" class="btn btn-success col-2 text-center">Valider mon panier</a>
+                {% else %}
+                <a href="{{ path('panier_validate', {"id": app.user.id}) }}" class="btn btn-success col-2 text-center">Valider mon panier</a>
+                {% endif %}
           </div>
         </div>
     </div>
