@@ -15,7 +15,7 @@ class CommandeController extends AbstractController
      */
     public function showCommande(EntityManagerInterface $entityManager): Response
     {
-        $commandes = $entityManager->getRepository(Commande::class);
+        $commandes = $entityManager->getRepository(Commande::class)->findAll();
 
         return $this->render('user/show_commande.html.twig', [
             'commandes' => $commandes

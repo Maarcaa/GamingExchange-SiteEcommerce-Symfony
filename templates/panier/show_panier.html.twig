@@ -19,7 +19,9 @@
                 <thead class="table-dark">
                 <tr>
                     <th class="text-center">#</th>
-                    <th class="text-center">article</th>
+                    <th class="text-center">Photo</th>
+                    <th class="text-center">Titre</th>
+                    <th class="text-center">Description</th>
                     <th class="text-center">Quantité</th>
                     <th class="text-center">P.U</th>
                     <th class="text-center">Total</th>
@@ -33,13 +35,11 @@
                     <tr>
                         <td class="align-middle text-center">{{ item['article'].id }}</td>
                         <td class="align-middle text-center">
-                            <div>{{ item['article'].titre }}</div>
-                        {% if item['article'].image is not null %}
-                            <img src="{{ asset('uploads/' ~ item['article'].image) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
-                        {% else %}
-                            <img src="" alt="pas de photo" width="250" height="120" style="object-fit: contain;">
-                        {% endif %}
+                        <img src="{{ asset('uploads/' ~ item['article'].image) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
                         </td>
+                         <td class="align-middle text-center">{{ item['article'].titre }}</td>
+                         <td class="align-middle text-center">{{ item['article'].description }}</td>
+                        
                         <td class="align-middle text-center">{{ item['quantity'] }}</td>
                         <td class="align-middle text-center">{{ item['article'].prix }}€</td>
                         <td class="align-middle text-center">{{ item['article'].prix * item['quantity'] }}€</td>

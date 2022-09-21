@@ -110,13 +110,11 @@ class PanierController extends AbstractController
         }
 
         $commande = new Commande();
-//        $user =
 
         $commande->setCreatedAt(new DateTimeImmutable());
         $commande->setUpdatedAt(new DateTime());
 
         $total = 0;
-
 
         foreach($panier as $item) {
             $totalItem = $item['article']->getPrix() * $item['quantity'];
@@ -129,13 +127,16 @@ class PanierController extends AbstractController
         $commande->setEtat('en préparation');
         $commande->setUser($this->getUser());
         $commande->setMontantCommande($total);
+
         
+        $commande->setPhoto($item['article']->getImage());
         $commande->setArticle($item['article']->getTitre());
         $commande->setDescription($item['article']->getDescription());
 
+
         $entityManager->persist($commande);
         $entityManager->flush();
-
+        
         $session->remove('panier');
 
         $this->addFlash('success', "Bravo, votre commande est prise en compte et en préparation. Vous pouvez la retrouver dans Mes Commandes.");
