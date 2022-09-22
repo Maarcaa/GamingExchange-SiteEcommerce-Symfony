@@ -44,13 +44,15 @@
                         <td class="align-middle text-center">{{ item['article'].prix }}€</td>
                         <td class="align-middle text-center">{{ item['article'].prix * item['quantity'] }}€</td>
                         <td class="align-middle text-center">
-                            <a href="{{ path('panier_remove', {'id': item['article'].id}) }}" class="btn btn-sm btn-danger"><i class="fa-solid fa-circle-minus" title="Supprimer ce article du panier"></i></a>
+                            <a href="{{ path('panier_add', {'id': item['article'].id}) }}" class="btn btn-success"><i class="fa-solid fa-circle-plus" title="Add une quantité de l'article du panier"></i></a>
+                             <a href="{{ path('panier_minus', {'id': item['article'].id}) }}" class="btn btn-warning"><i class="fa-solid fa-circle-minus text-white" title="Supprimer une quantité de cet article du panier"></i></a>
+                             <a href="{{ path('panier_remove', {'id': item['article'].id}) }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark" title="Supprimer cet article du panier"></i></a>
                         </td>
                     </tr>
 {#                    {% endif %}#}
                 {% else %}
                     <tr>
-                        <td colspan="6" class="text-center bg-warning">Votre panier est vide</td>
+                        <td colspan="8" class="text-center bg-warning">Votre panier est vide</td>
                     </tr>
                 {% endfor %}
 

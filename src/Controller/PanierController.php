@@ -58,7 +58,32 @@ class PanierController extends AbstractController
         $session->set('panier', $panier);
 
         $this->addFlash('success', "L'article a été ajouté à votre panier");
-        return $this->redirectToRoute('default_home');
+        return $this->redirectToRoute('show_panier');
+    }
+
+    /**
+     * @Route("/enlever-un-article/{id}", name="panier_minus", methods={"GET"})
+     * @param Article $article
+     * @param SessionInterface $session
+     * @return Response
+     */
+    public function minus(Article $article, SessionInterface $session): Response
+    {
+        // Si dans la session le panier n'existe pas, alors la méthode get() retournera le second paramètre, un array vide.
+        $panier = $session->get('panier', []);
+
+        if( !empty( $panier[$article->getId()] ) ) {
+            --$panier[$article->getId()]['quantity'];
+        } else {
+            $panier[$article->getId()]['quantity'] = 1;
+            $panier[$article->getId()]['article'] = $article;
+        }
+
+        // Ici, nous devons set() le panier en session, en lui passant notre $panier[]
+        $session->set('panier', $panier);
+
+        $this->addFlash('success', "L'article a été ajouté à votre panier");
+        return $this->redirectToRoute('show_panier');
     }
 
     /**
@@ -89,7 +114,7 @@ class PanierController extends AbstractController
             // unset() est une fonction native de PHP, qui permet de supprimer une variable (ou une key dans un array)
             unset($panier[$id]);
         } else {
-            $this->addFlash('warning', "Ce article n'est pas dans votre panier.");
+            $this->addFlash('warning', "Cet article n'est pas dans votre panier.");
         }
 
         $session->set('panier', $panier);
@@ -128,7 +153,6 @@ class PanierController extends AbstractController
         $commande->setUser($this->getUser());
         $commande->setMontantCommande($total);
 
-        
         $commande->setPhoto($item['article']->getImage());
         $commande->setArticle($item['article']->getTitre());
         $commande->setDescription($item['article']->getDescription());
