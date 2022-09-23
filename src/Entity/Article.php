@@ -80,6 +80,11 @@ class Article
      */
     private $commande;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PanierProduit::class, inversedBy="article")
+     */
+    private $panierProduit;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -248,6 +253,18 @@ class Article
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getPanierProduit(): ?PanierProduit
+    {
+        return $this->panierProduit;
+    }
+
+    public function setPanierProduit(?PanierProduit $panierProduit): self
+    {
+        $this->panierProduit = $panierProduit;
 
         return $this;
     }

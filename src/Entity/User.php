@@ -102,10 +102,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $commandes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PanierProduit::class, mappedBy="user")
+     */
+    private $panierProduits;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->panierProduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -383,6 +389,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($commande->getUser() === $this) {
                 $commande->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PanierProduit>
+     */
+    public function getPanierProduits(): Collection
+    {
+        return $this->panierProduits;
+    }
+
+    public function addPanierProduit(PanierProduit $panierProduit): self
+    {
+        if (!$this->panierProduits->contains($panierProduit)) {
+            $this->panierProduits[] = $panierProduit;
+            $panierProduit->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierProduit(PanierProduit $panierProduit): self
+    {
+        if ($this->panierProduits->removeElement($panierProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($panierProduit->getUser() === $this) {
+                $panierProduit->setUser(null);
             }
         }
 

@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Commande;
-use App\Entity\Article;
-use App\Entity\User;
 use DateTime;
+use App\Entity\User;
+use App\Entity\Panier;
 use DateTimeImmutable;
+use App\Entity\Article;
+use App\Entity\Commande;
+use App\Entity\PanierProduit;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class PanierController extends AbstractController
@@ -42,7 +44,7 @@ class PanierController extends AbstractController
      * @param SessionInterface $session
      * @return Response
      */
-    public function add(Article $article, SessionInterface $session): Response
+    public function add(Article $article, SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
         // Si dans la session le panier n'existe pas, alors la méthode get() retournera le second paramètre, un array vide.
         $panier = $session->get('panier', []);
@@ -56,6 +58,19 @@ class PanierController extends AbstractController
 
         // Ici, nous devons set() le panier en session, en lui passant notre $panier[]
         $session->set('panier', $panier);
+
+        $panierProduit = new PanierProduit();
+
+        $panierProduit->setCreatedAt(new DateTimeImmutable());
+        $panierProduit->setUpdatedAt(new DateTime());
+        $panierProduit->setPhoto($article->getImage());
+        $panierProduit->setTitre($article->getTitre());
+        $panierProduit->setDescription($article->getDescription());
+        $panierProduit->setPrix($article->getPrix());
+        $panierProduit->setUser($this->getUser());
+
+        $entityManager->persist($panierProduit);
+        $entityManager->flush();
 
         $this->addFlash('success', "L'article a été ajouté à votre panier");
         return $this->redirectToRoute('show_panier');
@@ -125,7 +140,7 @@ class PanierController extends AbstractController
     /**
      * @Route("/valider-mon-panier", name="panier_validate", methods={"GET"})
      */
-    public function validateCommande(SessionInterface $session, EntityManagerInterface $entityManager): Response
+    public function validatePanier(SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
         $panier = $session->get('panier', []);
 
@@ -134,31 +149,22 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('show_panier');
         }
 
-        $commande = new Commande();
+        $panier = new Panier();
 
-        $commande->setCreatedAt(new DateTimeImmutable());
-        $commande->setUpdatedAt(new DateTime());
+        $panier->setCreatedAt(new DateTimeImmutable());
+        $panier->setUpdatedAt(new DateTime());
 
         $total = 0;
 
+        $article = new Article();
         foreach($panier as $item) {
-            $totalItem = $item['article']->getPrix() * $item['quantity'];
+            $totalItem = $article->getPrix() * $item['quantity'];
             $total += $totalItem;
-
-            $commande->setQuantite($item['quantity']);
         }
 
+        $panier->setUser($this->getUser());
 
-        $commande->setEtat('en préparation');
-        $commande->setUser($this->getUser());
-        $commande->setMontantCommande($total);
-
-        $commande->setPhoto($item['article']->getImage());
-        $commande->setArticle($item['article']->getTitre());
-        $commande->setDescription($item['article']->getDescription());
-
-
-        $entityManager->persist($commande);
+        $entityManager->persist($panier);
         $entityManager->flush();
         
         $session->remove('panier');

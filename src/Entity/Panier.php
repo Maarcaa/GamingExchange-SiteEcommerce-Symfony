@@ -20,11 +20,6 @@ class Panier
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $article;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
@@ -40,7 +35,7 @@ class Panier
     private $deletedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="panier")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="panier")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -50,28 +45,17 @@ class Panier
      */
     private $articles;
 
-
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->panierProduit = new ArrayCollection();
+        $this->panierproduit = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getArticle(): ?string
-    {
-        return $this->article;
-    }
-
-    public function setArticle(string $article): self
-    {
-        $this->article = $article;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
