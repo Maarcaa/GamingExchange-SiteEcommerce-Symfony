@@ -27,10 +27,11 @@
 
 				{% else %}
 					<ul class="navbar-nav ms-auto">
-						{% if is_granted("ROLE_ADMIN") %}
 						<li class="me-5">
 						<a href="{{ path('show_panier') }}" class="btn btn-warning"><i class="fa-solid fa-cart-arrow-down"></i></a>
 					</li>
+						{% if is_granted("ROLE_ADMIN") %}
+					
 							<li class="nav-item dropdown navhover:hover">
 								<a class="nav-link dropdown-toggle text-primary  navhover:hover text-white navhover" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 									Espace Admin

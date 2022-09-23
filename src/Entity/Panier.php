@@ -35,15 +35,31 @@ class Panier
     private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="panier")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="panier")
+     */
+    private $articles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PanierProduit::class, mappedBy="panier")
+     */
+    private $panierproduit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $session;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="paniers")
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="panier")
+     * @ORM\Column(type="string", length=255)
      */
-    private $articles;
+    private $archive;
+
+
 
     public function __construct()
     {
@@ -94,18 +110,6 @@ class Panier
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Article>
      */
@@ -135,5 +139,72 @@ class Panier
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, PanierProduit>
+     */
+    public function getPanierproduit(): Collection
+    {
+        return $this->panierproduit;
+    }
+
+    public function addPanierproduit(PanierProduit $panierproduit): self
+    {
+        if (!$this->panierproduit->contains($panierproduit)) {
+            $this->panierproduit[] = $panierproduit;
+            $panierproduit->setPanier($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierproduit(PanierProduit $panierproduit): self
+    {
+        if ($this->panierproduit->removeElement($panierproduit)) {
+            // set the owning side to null (unless already changed)
+            if ($panierproduit->getPanier() === $this) {
+                $panierproduit->setPanier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSession(): ?string
+    {
+        return $this->session;
+    }
+
+    public function setSession(?string $session): self
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getArchive(): ?string
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(string $archive): self
+    {
+        $this->archive = $archive;
+
+        return $this;
+    }
+
 
 }

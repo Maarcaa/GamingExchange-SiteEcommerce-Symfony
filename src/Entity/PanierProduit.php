@@ -60,6 +60,16 @@ class PanierProduit
     private $deletedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="panierproduit")
+     */
+    private $panier;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantite;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="panierProduits")
      */
     private $user;
@@ -185,6 +195,30 @@ class PanierProduit
     public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getPanier(): ?Panier
+    {
+        return $this->panier;
+    }
+
+    public function setPanier(?Panier $panier): self
+    {
+        $this->panier = $panier;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?string
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(string $quantite): self
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

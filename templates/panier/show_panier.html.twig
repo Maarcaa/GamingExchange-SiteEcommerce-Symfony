@@ -30,23 +30,23 @@
                 </thead>
                 <tbody>
 
-                {% for item in app.session.get('panier') %}
+                {% for item in panierproduit %}
 {#                    {% if key is not same as 'total' %}#}
                     <tr>
-                        <td class="align-middle text-center">{{ item['article'].id }}</td>
+                        <td class="align-middle text-center">{{ item.id }}</td>
                         <td class="align-middle text-center">
-                        <img src="{{ asset('uploads/' ~ item['article'].image) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
+                        <img src="{{ asset('uploads/' ~ item.photo) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
                         </td>
-                         <td class="align-middle text-center">{{ item['article'].titre }}</td>
-                         <td class="align-middle text-center">{{ item['article'].description }}</td>
+                         <td class="align-middle text-center">{{ item.titre }}</td>
+                         <td class="align-middle text-center">{{ item.description }}</td>
                         
-                        <td class="align-middle text-center">{{ item['quantity'] }}</td>
-                        <td class="align-middle text-center">{{ item['article'].prix }}€</td>
-                        <td class="align-middle text-center">{{ item['article'].prix * item['quantity'] }}€</td>
+                        <td class="align-middle text-center">{{ item.quantite }}</td>
+                        <td class="align-middle text-center">{{ item.prix }}€</td>
+                        <td class="align-middle text-center">{{ item.prix * item.quantite }}€</td>
                         <td class="align-middle text-center">
-                            <a href="{{ path('panier_add', {'id': item['article'].id}) }}" class="btn btn-success"><i class="fa-solid fa-circle-plus" title="Add une quantité de l'article du panier"></i></a>
-                             <a href="{{ path('panier_minus', {'id': item['article'].id}) }}" class="btn btn-warning"><i class="fa-solid fa-circle-minus text-white" title="Supprimer une quantité de cet article du panier"></i></a>
-                             <a href="{{ path('panier_remove', {'id': item['article'].id}) }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark" title="Supprimer cet article du panier"></i></a>
+                            <a href="{{ path('panier_add_product', {'id': item.id}) }}" class="btn btn-success"><i class="fa-solid fa-circle-plus" title="Add une quantité de l'article du panier"></i></a>
+                             <a href="{{ path('panier_minus_product', {'id': item.id}) }}" class="btn btn-warning"><i class="fa-solid fa-circle-minus text-white" title="Supprimer une quantité de cet article du panier"></i></a>
+                             <a href="{{ path('panier_remove', {'id': item.id}) }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark" title="Supprimer cet article du panier"></i></a>
                         </td>
                     </tr>
 {#                    {% endif %}#}
