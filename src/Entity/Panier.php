@@ -59,7 +59,15 @@ class Panier
      */
     private $archive;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PanierValidate::class, mappedBy="Panier")
+     */
+    private $panierValidates;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $total;
 
     public function __construct()
     {
@@ -67,6 +75,7 @@ class Panier
         $this->commandes = new ArrayCollection();
         $this->panierProduit = new ArrayCollection();
         $this->panierproduit = new ArrayCollection();
+        $this->panierValidates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -206,5 +215,46 @@ class Panier
         return $this;
     }
 
+    /**
+     * @return Collection<int, PanierValidate>
+     */
+    public function getPanierValidates(): Collection
+    {
+        return $this->panierValidates;
+    }
+
+    public function addPanierValidate(PanierValidate $panierValidate): self
+    {
+        if (!$this->panierValidates->contains($panierValidate)) {
+            $this->panierValidates[] = $panierValidate;
+            $panierValidate->setPanier($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierValidate(PanierValidate $panierValidate): self
+    {
+        if ($this->panierValidates->removeElement($panierValidate)) {
+            // set the owning side to null (unless already changed)
+            if ($panierValidate->getPanier() === $this) {
+                $panierValidate->setPanier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
+
+        return $this;
+    }
 
 }

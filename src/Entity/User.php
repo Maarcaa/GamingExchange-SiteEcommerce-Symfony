@@ -112,12 +112,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $paniers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PanierValidate::class, mappedBy="user")
+     */
+    private $panierValidates;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->panierProduits = new ArrayCollection();
         $this->paniers = new ArrayCollection();
+        $this->panierValidates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -455,6 +461,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($panier->getUser() === $this) {
                 $panier->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PanierValidate>
+     */
+    public function getPanierValidates(): Collection
+    {
+        return $this->panierValidates;
+    }
+
+    public function addPanierValidate(PanierValidate $panierValidate): self
+    {
+        if (!$this->panierValidates->contains($panierValidate)) {
+            $this->panierValidates[] = $panierValidate;
+            $panierValidate->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierValidate(PanierValidate $panierValidate): self
+    {
+        if ($this->panierValidates->removeElement($panierValidate)) {
+            // set the owning side to null (unless already changed)
+            if ($panierValidate->getUser() === $this) {
+                $panierValidate->setUser(null);
             }
         }
 

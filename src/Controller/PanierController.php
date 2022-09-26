@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use App\Entity\Article;
 use App\Entity\Commande;
 use App\Entity\PanierProduit;
+use App\Entity\PanierValidate;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class PanierController extends AbstractController
      */
     public function showPanier(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non' ], ['updatedAt' => 'DESC']);
+        $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non'], ['updatedAt' => 'DESC']);
         if ($panier == null) {
             $panier = $entityManager->getRepository(Panier::class)->findOneBy(['session' => $request->getSession()->get('session')]);
         }
@@ -66,7 +67,7 @@ class PanierController extends AbstractController
         $panier = $entityManager->getRepository(Panier::class)->findOneBy(['session' => $request->getSession()->get('session')]);
 
         if ($this->getUser() !== null && $panier == null) {
-            $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non' ], ['updatedAt' => 'DESC']);
+            $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non'], ['updatedAt' => 'DESC']);
         }
 
         if ($panier == null) {
@@ -78,18 +79,7 @@ class PanierController extends AbstractController
         $panier->setUpdatedAt(new DateTime());
         $panier->setUser($this->getUser());
         $panier->setSession($request->getSession()->get('session'));
-        $panier->setArchive('non');
-
-
-
-        // $panier = $session->get('panier', []);
-
-        // if( !empty( $panier->getId())) {
-        //     ++$panier->getId()['quantity'];
-        // } else {
-        //     $panier->getId()['quantity'] = 1;
-        //     $panier[$article->getId()]['article'] = $article;
-        // }
+        $panier->setArchive('non');   
 
         $panierProduit = new PanierProduit();
 
@@ -101,11 +91,21 @@ class PanierController extends AbstractController
         $panierProduit->setPrix($article->getPrix());
         $panierProduit->setUser($this->getUser());
         $panierProduit->setQuantite(1);
+
         $panier->addPanierProduit($panierProduit);
 
+        $totalProduit = 0;
+        if ($panierProduit !== null) {
+            foreach ($panierProduit as $item) {
+                $totalItem = $panierProduit->getPrix() * ($panierProduit->getQuantite() + $panierProduit->getQuantite());
+                $totalProduit += $totalItem;
+            }
+        }
+        $panierProduit->setTotal($totalProduit);
+        $panier->setTotal($totalProduit);
+        
         $entityManager->persist($panierProduit);
         $entityManager->persist($panier);
-
         $entityManager->flush();
 
         $this->addFlash('success', "L'article a été ajouté à votre panier");
@@ -119,7 +119,6 @@ class PanierController extends AbstractController
     {
         $panierProduit = $entityManager->getRepository(PanierProduit::class)->findOneBy(['id' => $id]);
         $panierProduit->setQuantite($panierProduit->getQuantite() + 1);
-
 
         $entityManager->persist($panierProduit);
         $entityManager->flush();
@@ -147,15 +146,15 @@ class PanierController extends AbstractController
      */
     public function emptyPanier(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non' ], ['updatedAt' => 'DESC']);
+        $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non'], ['updatedAt' => 'DESC']);
         if ($panier == null) {
             $panier = $entityManager->getRepository(Panier::class)->findOneBy(['session' => $request->getSession()->get('session')]);
         }
-        $panierProduit = $entityManager->getRepository(PanierProduit::class)->findBy(['panier' => $panier->getId()]);
+
+        $panierProduit = $entityManager->getRepository(PanierProduit::class)->findAll();
 
         foreach ($panierProduit as $item) {
             $entityManager->remove($item);
-            $entityManager->flush();
         }
 
         return $this->redirectToRoute('show_panier');
@@ -180,37 +179,38 @@ class PanierController extends AbstractController
     /**
      * @Route("/valider-mon-panier", name="panier_validate", methods={"GET"})
      */
-    public function validatePanier(SessionInterface $session, EntityManagerInterface $entityManager): Response
+    public function validatePanier(SessionInterface $session, EntityManagerInterface $entityManager, Request $request): Response
     {
-        $panier = $session->get('panier', []);
+        $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non'], ['updatedAt' => 'DESC']);
+
+        if ($this->getUser() == null) {
+            $this->addFlash('warning', "Veuillez vous connecter");
+            return $this->redirectToRoute('show_panier');
+        }
 
         if (empty($panier)) {
             $this->addFlash('warning', 'Votre panier est vide.');
             return $this->redirectToRoute('show_panier');
         }
 
-        $panier = new Panier();
+        $panierValidate = new PanierValidate();
 
-        $panier->setCreatedAt(new DateTimeImmutable());
-        $panier->setUpdatedAt(new DateTime());
+        $panierValidate->setCreatedAt(new DateTimeImmutable());
+        $panierValidate->setUpdatedAt(new DateTime());
 
         $total = 0;
 
-        $article = new Article();
-        foreach ($panier as $item) {
-            $totalItem = $article->getPrix() * $item['quantity'];
-            $total += $totalItem;
-        }
+        $panierValidate->setUser($this->getUser());
+        $panierValidate->setSession($request->getSession()->get('session'));
+        $panierValidate->setArchive('non');
+        $panier->addPanierValidate($panier);
 
-        $panier->setUser($this->getUser());
-
-
-        $entityManager->persist($panier);
+        $entityManager->persist($panierValidate);
         $entityManager->flush();
 
         $session->remove('panier');
 
-        $this->addFlash('success', "Bravo, votre commande est prise en compte et en préparation. Vous pouvez la retrouver dans Mes Commandes.");
-        return $this->redirectToRoute('show_profile');
+        $this->addFlash('success', "Bravo, votre panier est validé. Veuillez confirmer votre adresse de livraison.");
+        return $this->redirectToRoute('default_home');
     } // end function validate()
 }

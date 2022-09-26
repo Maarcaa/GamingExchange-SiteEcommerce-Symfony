@@ -74,6 +74,11 @@ class PanierProduit
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $total;
+
     public function __construct()
     {
         $this->article = new ArrayCollection();
@@ -231,6 +236,18 @@ class PanierProduit
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }
