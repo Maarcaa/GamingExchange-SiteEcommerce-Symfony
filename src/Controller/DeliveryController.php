@@ -21,6 +21,15 @@ class DeliveryController extends AbstractController
     public function register(Request $request, EntityManagerInterface $entityManager): Response
     {
         $livraison = new Livraison;
+        $user = $entityManager->getRepository(User::class)->findAll();
+        $livraison->setPrenom($user);
+        $livraison->setNom('$Jean');
+        $livraison->setAdresse('$Jean');
+        $livraison->setCodePostal('77');
+        $livraison->setVille('$Jean');
+        $livraison->setPays('$Jean');
+        $livraison->setTelephone('+330606060606');
+        $livraison->setEmail('$Jean');
 
         $form = $this->createForm(DeliveryFormType::class, $livraison)
             ->handleRequest($request);
