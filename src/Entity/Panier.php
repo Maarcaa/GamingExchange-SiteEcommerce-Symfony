@@ -64,10 +64,6 @@ class Panier
      */
     private $panierValidates;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $total;
 
     public function __construct()
     {
@@ -245,16 +241,5 @@ class Panier
         return $this;
     }
 
-    public function getTotal(): ?int
-    {
-        return $this->total;
-    }
-
-    public function setTotal(int $total): self
-    {
-        $this->total = $total;
-
-        return $this;
-    }
 
 }

@@ -75,9 +75,9 @@ class PanierProduit
     private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $total;
+    private $session;
 
     public function __construct()
     {
@@ -240,14 +240,14 @@ class PanierProduit
         return $this;
     }
 
-    public function getTotal(): ?int
+    public function getSession(): ?string
     {
-        return $this->total;
+        return $this->session;
     }
 
-    public function setTotal(int $total): self
+    public function setSession(?string $session): self
     {
-        $this->total = $total;
+        $this->session = $session;
 
         return $this;
     }

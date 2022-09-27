@@ -22,11 +22,6 @@ class Livraison
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $numero_livraison;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $adresse;
 
     /**
@@ -79,6 +74,11 @@ class Livraison
      */
     private $commande;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
     public function __construct()
     {
         $this->commande = new ArrayCollection();
@@ -87,18 +87,6 @@ class Livraison
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNumeroLivraison(): ?string
-    {
-        return $this->numero_livraison;
-    }
-
-    public function setNumeroLivraison(string $numero_livraison): self
-    {
-        $this->numero_livraison = $numero_livraison;
-
-        return $this;
     }
 
     public function getAdresse(): ?string
@@ -247,6 +235,18 @@ class Livraison
                 $commande->setLivraison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }

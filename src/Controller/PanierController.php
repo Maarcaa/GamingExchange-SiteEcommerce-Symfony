@@ -47,6 +47,7 @@ class PanierController extends AbstractController
 
                 $totalItem = $item->getPrix() * $item->getQuantite();
 
+
                 $total += $totalItem; # => $total = $total + $totalItem
             }
         }
@@ -82,6 +83,7 @@ class PanierController extends AbstractController
         $panier->setArchive('non');   
 
         $panierProduit = new PanierProduit();
+  
 
         $panierProduit->setCreatedAt(new DateTimeImmutable());
         $panierProduit->setUpdatedAt(new DateTime());
@@ -89,20 +91,11 @@ class PanierController extends AbstractController
         $panierProduit->setTitre($article->getTitre());
         $panierProduit->setDescription($article->getDescription());
         $panierProduit->setPrix($article->getPrix());
+        $panierProduit->setSession($request->getSession()->get('session'));
         $panierProduit->setUser($this->getUser());
         $panierProduit->setQuantite(1);
 
         $panier->addPanierProduit($panierProduit);
-
-        $totalProduit = 0;
-        if ($panierProduit !== null) {
-            foreach ($panierProduit as $item) {
-                $totalItem = $panierProduit->getPrix() * ($panierProduit->getQuantite() + $panierProduit->getQuantite());
-                $totalProduit += $totalItem;
-            }
-        }
-        $panierProduit->setTotal($totalProduit);
-        $panier->setTotal($totalProduit);
         
         $entityManager->persist($panierProduit);
         $entityManager->persist($panier);
@@ -115,10 +108,25 @@ class PanierController extends AbstractController
     /**
      * @Route("/ajouter_un_article_panier_produit_{id}", name="panier_add_product", methods={"GET|POST"})
      */
-    public function panierAddProduct(int $id, EntityManagerInterface $entityManager)
+    public function panierAddProduct(int $id, EntityManagerInterface $entityManager, request $request)
     {
+        $panier = $entityManager->getRepository(Panier::class)->findOneBy(['session' => $request->getSession()->get('session')]);
+
+        if ($this->getUser() !== null && $panier == null) {
+            $panier = $entityManager->getRepository(Panier::class)->findOneBy(['user' => $this->getUser(), 'archive' => 'non'], ['updatedAt' => 'DESC']);
+        }
+        
+        if ($panier == null) {
+            $panier = new Panier();
+            $request->getSession()->set('session', uniqid(rand(), true));
+        }
+
         $panierProduit = $entityManager->getRepository(PanierProduit::class)->findOneBy(['id' => $id]);
         $panierProduit->setQuantite($panierProduit->getQuantite() + 1);
+        $panierProduit->setSession($request->getSession()->get('session'));
+        $panierProduit->setUser($this->getUser());
+
+        $panier->setUser($this->getUser());
 
         $entityManager->persist($panierProduit);
         $entityManager->flush();
@@ -155,6 +163,7 @@ class PanierController extends AbstractController
 
         foreach ($panierProduit as $item) {
             $entityManager->remove($item);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('show_panier');
@@ -198,12 +207,18 @@ class PanierController extends AbstractController
         $panierValidate->setCreatedAt(new DateTimeImmutable());
         $panierValidate->setUpdatedAt(new DateTime());
 
-        $total = 0;
-
         $panierValidate->setUser($this->getUser());
         $panierValidate->setSession($request->getSession()->get('session'));
         $panierValidate->setArchive('non');
-        $panier->addPanierValidate($panier);
+        $panier->addPanierValidate($panierValidate);
+
+        $totalProduit = 0;
+        if ($panier !== null) {
+            foreach ($panier as $totalItem) {
+                $totalItem = $panier->getPrix() * $panier->getQuantite();
+                $totalProduit += $totalItem;
+            }
+        }
 
         $entityManager->persist($panierValidate);
         $entityManager->flush();
@@ -211,6 +226,6 @@ class PanierController extends AbstractController
         $session->remove('panier');
 
         $this->addFlash('success', "Bravo, votre panier est validé. Veuillez confirmer votre adresse de livraison.");
-        return $this->redirectToRoute('default_home');
+        return $this->redirectToRoute('show_delivery');
     } // end function validate()
 }
