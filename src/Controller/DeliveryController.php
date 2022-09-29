@@ -21,16 +21,18 @@ class DeliveryController extends AbstractController
     public function register(Request $request, EntityManagerInterface $entityManager): Response
     {
         $livraison = new Livraison;
+        
         $user = $entityManager->getRepository(User::class)->findAll();
-        $livraison->setPrenom($user);
-        $livraison->setNom('$Jean');
-        $livraison->setAdresse('$Jean');
-        $livraison->setCodePostal('77');
-        $livraison->setVille('$Jean');
-        $livraison->setPays('$Jean');
-        $livraison->setTelephone('+330606060606');
-        $livraison->setEmail('$Jean');
 
+        foreach($user as $item){ 
+        $livraison->setPrenom($item->getPrenom());
+        $livraison->setNom($item->getNom());
+        $livraison->setAdresse($item->getAdresse());
+        $livraison->setCodePostal($item->getCodePostal());
+        $livraison->setVille($item->getVille());
+        $livraison->setTelephone($item->getTelephone());
+        $livraison->setEmail($item->getEmail());
+        }
         $form = $this->createForm(DeliveryFormType::class, $livraison)
             ->handleRequest($request);
 
@@ -42,7 +44,7 @@ class DeliveryController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', " Vos coordonnées de livraison ont bien été confirmé");
-            return $this->redirectToRoute('default_home');
+            return $this->redirectToRoute('add_paiement');
         }
 
         return $this->render('delivery/register_delivery.html.twig', [

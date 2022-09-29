@@ -105,20 +105,6 @@ class DeliveryFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('Pays', TextType::class, [
-                'label' => 'Pays',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide',
-                    ]),
-                    new Length([
-                        'max' => 100,
-                        'min' => 3,
-                        'maxMessage' => 'Votre Pays ne peut dépasser {{ limit }} caractères',
-                        'minMessage' => 'Votre pays doit avoir au minimum {{ limit }} caractères',
-                    ]),
-                ],
-            ])
             ->add('telephone', NumberType::class, [
                     'label' => 'Téléphone',
                     'constraints' => [
@@ -134,7 +120,7 @@ class DeliveryFormType extends AbstractType
                     ],
                 ])
                 ->add('submit', SubmitType::class, [
-                    'label' => 'Valider',
+                    'label' => 'Confirmer',
                     // Cette option permet de désactiver le validator HTML (front), comme on a fait en twig (voir ci-dessous)
                         # => form_start(form, {'attr': {'novalidate': novalidate}})
                     'validate' => false,
