@@ -14,7 +14,7 @@
 	<h1 class="my-4 text-center">Valider vos coordonnées de livraison</h1>
 
 	<div class="row">
-		<div class="col-6 mx-auto">
+		<div class="col-6 mx-auto border border-dark mb-5 p-5">
 			{{ form_start(form) }}
 			<div class="col-4">{{ form_row(form.prenom)  }}</div>
 			<div class="col-4">{{ form_row(form.nom) }}</div>
@@ -34,8 +34,17 @@
 				<div class="col-4">{{ form_row(form.email) }}</div>
 			</div>
 
-			{{ form_end(form) }}
+
 		</div>
 	</div>
 
-{% endblock %}
+	<h2 class="my-4 text-center">Choisissez votre mode de livraison</h2>
+	<div class="row">
+		<div class="col-6 mx-auto border border-dark mb-5 p-5">
+			<div class="col-6 mx-auto">
+				{{ form_row(form.modelivraison) }}
+			</div>
+			{{ form_end(form) }}
+		</div>
+
+	{% endblock %}

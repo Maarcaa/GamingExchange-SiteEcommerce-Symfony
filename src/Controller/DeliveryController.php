@@ -44,7 +44,7 @@ class DeliveryController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', " Vos coordonnées de livraison ont bien été confirmé");
-            return $this->redirectToRoute('add_paiement');
+            return $this->redirectToRoute('paiement_add');
         }
 
         return $this->render('delivery/register_delivery.html.twig', [

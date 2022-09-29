@@ -74,6 +74,11 @@ class Livraison
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $modelivraison;
+
     public function __construct()
     {
         $this->commande = new ArrayCollection();
@@ -230,6 +235,18 @@ class Livraison
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getModelivraison(): ?string
+    {
+        return $this->modelivraison;
+    }
+
+    public function setModelivraison(string $modelivraison): self
+    {
+        $this->modelivraison = $modelivraison;
 
         return $this;
     }

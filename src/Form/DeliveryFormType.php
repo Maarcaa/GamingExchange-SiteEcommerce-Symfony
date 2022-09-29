@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -119,6 +120,18 @@ class DeliveryFormType extends AbstractType
                         ]),
                     ],
                 ])
+                ->add(
+                    'modelivraison', 
+                    ChoiceType::class, 
+                    [
+                        'choices' => [
+                            'MondialRelay' => 'MondialRelay',
+                            'Chronopost' => 'Chronopost',
+                            'RelaisColis' => 'RelaisColis',
+                        ],
+                    'expanded' => true
+                    ]
+                )
                 ->add('submit', SubmitType::class, [
                     'label' => 'Confirmer',
                     // Cette option permet de désactiver le validator HTML (front), comme on a fait en twig (voir ci-dessous)
