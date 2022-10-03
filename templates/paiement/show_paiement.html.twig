@@ -14,63 +14,64 @@
 	<h1 class="my-4 text-center">Récapitulatif de la commande</h1>
 
 
-    <div class="row my-3">
-        <div class="col-6 mx-auto border border-dark mb-5 p-5">
+	<div class="row my-3">
+		<div class="col-6 mx-auto border border-dark mb-5 p-5">
 
-            <table class="table">
-                <thead class="table-dark">
-                <tr>
-                    <th class="text-center col-3">Photo</th>
-                    <th class="text-center col-3">Titre</th>
-                    <th class="text-center col-3">Quantité</th>
-                    <th class="text-center col-3">Total</th>
-                </tr>
-                </thead>
-                <tbody>
+			<table class="table">
+				<thead class="table-dark">
+					<tr>
+						<th class="text-center col-3">Photo</th>
+						<th class="text-center col-3">Titre</th>
+						<th class="text-center col-3">Quantité</th>
+						<th class="text-center col-3">Total</th>
+					</tr>
+				</thead>
+				<tbody>
 
-                {% for item in panierproduit %}
-                    <tr>
-                        <td class="align-middle text-center">
-                        <img src="{{ asset('uploads/' ~ item.photo) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
-                        </td>
-                         <td class="align-middle text-center">{{ item.titre }}</td>
-                        <td class="align-middle text-center">{{ item.quantite }}</td>
-                        <td class="align-middle text-center">{{ total }}€</td>
-                    </tr>
-                {% endfor %}
+					{% for item in panierproduit %}
+						<tr>
+							<td class="align-middle text-center">
+								<img src="{{ asset('uploads/' ~ item.photo) }}" alt="photo de article" width="250" height="120" style="object-fit: contain;">
+							</td>
+							<td class="align-middle text-center">{{ item.titre }}</td>
+							<td class="align-middle text-center">{{ item.quantite }}</td>
+							<td class="align-middle text-center">{{ total }}€</td>
+						</tr>
+					{% endfor %}
 
-                </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
 {# MOYEN DE PAIEMENT  #}
 
-	<h2 class="my-4 text-center">Moyen de paiement</h2>
+<h2 class="my-4 text-center">Moyen de paiement</h2>
 
 
-	<div class="row ">
-		<div class="col-6 mx-auto border border-dark mb-5 p-5">
-			{{ form_start(form) }}
+<div class="row ">
+	<div class="col-6 mx-auto border border-dark mb-5 p-5">
+		{{ form_start(form) }}
 
-			<div class="row mx-auto">
-				<div class="col-4"><img src="{{ asset('uploads/cb.jpg') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70"></div>
-				<div class="col-4"><img src="{{ asset('uploads/mc.png') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
-				</div>
-				<div class="col-4"><img src="{{ asset('uploads/paypal.png') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
-				</div>
-
-				<div class="col-6">
-					{{ form_row(form.modepaiement) }}
-				</div>
-
-
+		<div class="row mx-auto">
+			<div class="col-4"><img src="{{ asset('uploads/cb.jpg') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70"></div>
+			<div class="col-4"><img src="{{ asset('uploads/mc.png') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
+			</div>
+			<div class="col-4"><img src="{{ asset('uploads/paypal.png') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
 			</div>
 
-			{{ form_end(form) }}
+			<div class="col-8">
+				{{ form_row(form.modepaiement) }}
+			</div>
+			<div class="col-6 mx-auto">{{ form_row(form.nom) }}</div>
+			<div class="col-6 mx-auto">{{ form_row(form.prenom) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.numerocb) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.dateexpiration) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.codeverification) }}</div>
+
 		</div>
+
+		{{ form_end(form) }}
 	</div>
-
-
-{% endblock %}
+</div>{% endblock %}

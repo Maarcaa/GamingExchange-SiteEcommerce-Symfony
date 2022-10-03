@@ -16,35 +16,33 @@
 	<div class="row">
 		<div class="col-6 mx-auto border border-dark mb-5 p-5">
 			{{ form_start(form) }}
-			<div class="col-4">{{ form_row(form.prenom)  }}</div>
-			<div class="col-4">{{ form_row(form.nom) }}</div>
-			<div class="row">
-				<div class="col-4">{{ form_row(form.adresse) }}</div>
-			</div>
-			<div class="row">
-				<div class="col-4">{{ form_row(form.code_postal) }}</div>
-			</div>
-			<div class="row">
-				<div class="col-4">{{ form_row(form.ville) }}</div>
-			</div>
-			<div class="row">
-				<div class="col-4">{{ form_row(form.telephone) }}</div>
-			</div>
-			<div class="row">
-				<div class="col-4">{{ form_row(form.email) }}</div>
-			</div>
-
-
+			<div class="col-4 mx-auto">{{ form_row(form.prenom)  }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.nom) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.adresse) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.code_postal) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.ville) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.telephone) }}</div>
+			<div class="col-4 mx-auto">{{ form_row(form.email) }}</div>
 		</div>
 	</div>
 
 	<h2 class="my-4 text-center">Choisissez votre mode de livraison</h2>
+
 	<div class="row">
 		<div class="col-6 mx-auto border border-dark mb-5 p-5">
 			<div class="col-6 mx-auto">
 				{{ form_row(form.modelivraison) }}
 			</div>
+			<div class="row">
+				<div class="col-4"><img src="{{ asset('uploads/chronopost.png') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
+				</div>
+				<div class="col-4"><img src="{{ asset('uploads/relaiscolis.png') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
+				</div>
+				<div class="col-4"><img src="{{ asset('uploads/mondialrelay.jpg') }}" class="card-img-top" alt="une photo" style="object-fit: contain;" height="70">
+				</div>
+			</div>
 			{{ form_end(form) }}
 		</div>
+	</div>
 
-	{% endblock %}
+{% endblock %}
