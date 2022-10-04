@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use DateTimeImmutable;
 use App\Entity\Article;
+use App\Entity\Categorie;
 use App\Form\ProduitFormType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieRepository;
@@ -138,7 +139,6 @@ class ProduitController extends AbstractController
             'article' => $article,
         ]);
     }
-
 
 
     ///////////////////////////////////////////////////////////////// PRIVATE FUNCTION /////////////////////////////////////////////////////////////
