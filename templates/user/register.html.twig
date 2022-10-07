@@ -1,32 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Inscription
+{% endblock %}
 
 {% block body %}
 
-   <div class="row">
-        <div class="col-8 mx-auto">
-            {% include 'include/_flashes.html.twig' %}
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-8 mx-auto">
+			{% include 'include/_flashes.html.twig' %}
+		</div>
+	</div>
 
-    {% if action is not defined %}
-        <h1 class="my-4 text-center">Inscription</h1>
-    {% else %}
-        <h1 class="my-4 text-center">Changer le mot de passe</h1>
-    {% endif %}
+	{% if action is not defined %}
+		<h1 class="my-4 text-center">Inscription</h1>
+	{% else %}
+		<h1 class="my-4 text-center">Changer le mot de passe</h1>
+	{% endif %}
 
-    <div class="row">
-        <div class="col-6 mx-auto">
-            {{ form_start(form) }}
+	<div class="row">
+		<div class="col-6 mx-auto">
+			{{ form_start(form) }}
 
-            <div class="row">
-                <div class="col-6">{{ form_row(form.pseudo) }}</div>
-                <div class="col-6">{{ form_row(form.email) }}</div>
-            </div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.pseudo) }}</div>
+				<div class="col-6">{{ form_row(form.email) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.nom) }}</div>
+				<div class="col-6">{{ form_row(form.prenom) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.password) }}</div>
+				<div class="col-6">{{ form_row(form.telephone) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.sexe) }}</div>
+				<div class="col-6">{{ form_row(form.datenaissance) }}</div>
 
-            {{ form_end(form) }}
-        </div>
-    </div>
+			</div>
+			<div class="row">
+				<div class="col-12">{{ form_row(form.adresse) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.code_postal) }}</div>
+				<div class="col-6">{{ form_row(form.ville) }}</div>
+			</div>
+			{{ form_end(form) }}
 
-{% endblock %}
+		</div>
+
+	{% endblock %}

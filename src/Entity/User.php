@@ -117,6 +117,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $panierValidates;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $datenaissance;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -493,6 +498,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $panierValidate->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDatenaissance(): ?\DateTimeInterface
+    {
+        return $this->datenaissance;
+    }
+
+    public function setDatenaissance(\DateTimeInterface $datenaissance): self
+    {
+        $this->datenaissance = $datenaissance;
 
         return $this;
     }

@@ -3,18 +3,22 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class InscriptionFormType extends AbstractType
@@ -22,21 +26,21 @@ class InscriptionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('email', EmailType::class, [
-            'label' => 'Email',
-            'constraints' => [
-                new NotBlank([
-                    'message' => 'Ce champ ne peut être vide',
-                ]),
-                new Length([
-                    'max' => 180,
-                    'maxMessage' => 'Votre email ne peut dépasser {{ limit }} caractères',
-                ]),
-                new Email([
-                    'message' => 'Votre email n\'est pas au bon format: ex. mail@example.com'
-                ]),
-            ],
-        ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ ne peut être vide',
+                    ]),
+                    new Length([
+                        'max' => 180,
+                        'maxMessage' => 'Votre email ne peut dépasser {{ limit }} caractères',
+                    ]),
+                    new Email([
+                        'message' => 'Votre email n\'est pas au bon format: ex. mail@example.com'
+                    ]),
+                ],
+            ])
             ->add('password', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'constraints' => [
@@ -95,7 +99,7 @@ class InscriptionFormType extends AbstractType
                     ]),
                 ]
             ])
-            
+
             ->add('adresse', TextType::class, [
                 'label' => 'Adresse',
                 'constraints' => [
@@ -138,20 +142,20 @@ class InscriptionFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('telephone', NumberType::class, [
-                    'label' => 'Téléphone',
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Ce champ ne peut être vide',
-                        ]),
-                        new Length([
-                            'max' => 10,
-                            'min' => 10,
-                            'maxMessage' => 'Votre téléphone doit compoter {{ limit }} caractères',
-                            'minMessage' => 'Votre téléphone doit compoter {{ limit }} caractères',
-                        ]),
-                    ],
-                ])
+            ->add('telephone', TelType::class, [
+                'label' => 'Téléphone',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ ne peut être vide',
+                    ]),
+                    new Length([
+                        'max' => 10,
+                        'min' => 10,
+                        'maxMessage' => 'Votre téléphone doit compoter {{ limit }} caractères',
+                        'minMessage' => 'Votre téléphone doit compoter {{ limit }} caractères',
+                    ]),
+                ],
+            ])
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo',
                 'constraints' => [
@@ -166,20 +170,22 @@ class InscriptionFormType extends AbstractType
                     ]),
                 ],
             ])
-            
+            ->add('datenaissance', BirthdayType::class, [
+                'label' => 'Date de naissance',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ ne peut être vide',
+                    ]),
+                ],
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider',
-                // Cette option permet de désactiver le validator HTML (front), comme on a fait en twig (voir ci-dessous)
-                    # => form_start(form, {'attr': {'novalidate': novalidate}})
                 'validate' => false,
                 'attr' => [
                     'class' => 'd-block mx-auto col-2 btn btn-primary'
                 ]
-            ])
-        ;
+            ]);
     }
-
-    
 
     public function configureOptions(OptionsResolver $resolver): void
     {
