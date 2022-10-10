@@ -35,7 +35,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-
+            $this->addFlash('success', "Votre êtes bien inscrit !");
             return $this->redirectToRoute('app_login');
         }
 
@@ -59,22 +59,25 @@ class UserController extends AbstractController
     /**
      * @Route("/profile/changer-mon-mot-de-passe", name="change_password", methods={"GET|POST"})
      */
-    public function changePassword(EntityManagerInterface $entityManager,
-                                   UserPasswordHasherInterface $passwordHasher,
-                                   Request $request): Response
-    {
+    public function changePassword(
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
+        Request $request
+    ): Response {
         $form = $this->createForm(ChangePasswordFormType::class)
             ->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var User $user */
             $user = $entityManager->getRepository(User::class)->findOneBy(['id' => $this->getUser()]);
 
             $user->setUpdatedAt(new DateTime());
 
-            $user->setPassword($passwordHasher->hashPassword(
-                $user, $form->get('plainPassword')->getData()
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
                 )
             );
 

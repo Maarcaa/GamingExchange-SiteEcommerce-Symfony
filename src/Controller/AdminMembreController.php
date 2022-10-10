@@ -95,7 +95,7 @@ class AdminMembreController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $this->addFlash('succès', 'Le membre a bien été supprimé');
+        $this->addFlash('success', 'Le membre a bien été supprimé');
         return $this->redirectToRoute('show_membre');
 
     }

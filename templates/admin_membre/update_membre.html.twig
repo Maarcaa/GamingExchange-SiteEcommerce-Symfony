@@ -12,17 +12,33 @@
 	<div class="row">
 		<div class="col-11 mx-auto my-4">
 
-					{{ form_start(form) }}
+			{{ form_start(form) }}
 
-						<div class="row">
+			<div class="row">
+				<div class="col-6">{{ form_row(form.pseudo) }}</div>
+				<div class="col-6">{{ form_row(form.email) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.nom) }}</div>
+				<div class="col-6">{{ form_row(form.prenom) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6 d-none">{{ form_row(form.password) }}</div>
+				<div class="col-6">{{ form_row(form.telephone) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.sexe) }}</div>
+				<div class="col-6">{{ form_row(form.datenaissance) }}</div>
 
-					{# <div class="col-4">{{ form_row(form.roles) }}</div> #}
-
-					{# {{ form_row(form.created_at | date('d/m/Y') ) }}
-
-					{{ form_row(form.updatedAt | date('d/m/Y') ) }} #}
-
-					{{ form_end(form) }}
+			</div>
+			<div class="row">
+				<div class="col-12">{{ form_row(form.adresse) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-6">{{ form_row(form.code_postal) }}</div>
+				<div class="col-6">{{ form_row(form.ville) }}</div>
+			</div>
+			{{ form_end(form) }}
 
 			</div>
 		</div>
