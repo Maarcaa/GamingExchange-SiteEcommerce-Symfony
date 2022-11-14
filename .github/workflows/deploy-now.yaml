@@ -1,0 +1,80 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: Deploy Now
+
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  deploy-now:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Fetch project data
+        uses: ionos-deploy-now/retrieve-project-info-action@v1
+        id: project
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          project: ${{ secrets.IONOS_PROJECT_ID }}
+          service-host: api-eu.ionos.space
+
+      - name: checkout
+        if: ${{ steps.project.outputs.deployment-enabled == 'true' }}
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Render templates
+        if: ${{ steps.project.outputs.deployment-enabled == 'true' }}
+        uses: ionos-deploy-now/template-renderer-action@v1
+        id: template
+        with:
+          secrets: |
+            IONOS_MAIL_ENCRYPTION: '${{ secrets.IONOS_MAIL_ENCRYPTION }}'
+            IONOS_MAIL_FROM_ADDRESS: '${{ secrets.IONOS_MAIL_FROM_ADDRESS }}'
+            IONOS_MAIL_HOST: '${{ secrets.IONOS_MAIL_HOST }}'
+            IONOS_MAIL_PASSWORD: '${{ secrets.IONOS_MAIL_PASSWORD }}'
+            IONOS_MAIL_PORT: '${{ secrets.IONOS_MAIL_PORT }}'
+            IONOS_MAIL_USERNAME: '${{ secrets.IONOS_MAIL_USERNAME }}'
+
+      - name: Setup Node
+        if: ${{ steps.project.outputs.deployment-enabled == 'true' }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: v16.x
+
+      - name: Build Node assets
+        if: ${{ steps.project.outputs.deployment-enabled == 'true' }}
+        env:
+          CI: true
+          SITE_URL: ${{ steps.project.outputs.site-url }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup composer
+        if: ${{ steps.project.outputs.deployment-enabled == 'true' }}
+        uses: php-actions/composer@v6
+# uncomment the following lines if you want to add environment variables for this step
+#        env:
+#          MY_ENV_VAR: value-for-my-env-var
+#          MY_SECRET_ENV_VAR: ${{ secrets.MY_SECRET }} # here you can find information how to create secrets: https://docs.github.com/en/actions/security-guides/encrypted-secrets
+        with:
+          php_version: '8.0'
+          version: '2'
+          args: --optimize-autoloader --no-dev
+
+      - name: Deploy to IONOS
+        if: ${{ steps.project.outputs.deployment-enabled == 'true' }}
+        uses: ionos-deploy-now/deploy-to-ionos-action@v1
+        with:
+          project: ${{ secrets.IONOS_PROJECT_ID }}
+          branch-id: ${{ steps.project.outputs.branch-id }}
+          service-host: api-eu.ionos.space
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          dist-folder: ./
+          runtime-placeholder-files: ${{ steps.template.outputs.runtime-placeholder-files }}
