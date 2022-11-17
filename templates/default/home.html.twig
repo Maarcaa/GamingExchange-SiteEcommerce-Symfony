@@ -60,9 +60,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ article.titre }}</h5>
                     <p class="card-text">{{ article.description | length > 31 ? article.description | slice(0,31) ~ '...' : article.description }}</p>
-                    <a href="{{ path('panier_add', {'id': article.id}) }}" class="col-12 btn btn-warning text-center"><i class="fa-solid fa-cart-plus"></i></a>
-					<h5 class="card-title">Prix : {{ article.prix }} €</h5>
-					<h5 class="card-title"> Stock : {{ article.quantiteStock }} </h5>
+					<h6 class="card-title">Prix : {{ article.prix }} €</h5>
+					<a href="{{ path('panier_add', {'id': article.id}) }}" class="col-12 btn btn-warning text-center"><i class="fa-solid fa-cart-plus"></i></a>
                 </div>
             </div>
         </div>
