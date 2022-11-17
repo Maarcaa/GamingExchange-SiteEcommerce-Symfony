@@ -14,7 +14,7 @@
 
 <!-- CAROUSEL -->
 <div class="row">
-	<div class="container col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-11 mx-auto">
+	<div class="container col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-7 mx-auto">
 		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
 			<div class="carousel-indicators">
 				<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -62,7 +62,7 @@
 <div class="row d-flex justify-content-around col-10 mx-auto">
 {% for article in articles %}
 
-        <div class=" col-sm-12 col-md-5 col-lg-5 col-xl-3 col-xxl-2 mt-5 mb-5 ms-3 mx-auto ">
+        <div class=" col-sm-12 col-md-5 col-lg-5 col-xl-3 col-xxl-2 mt-5 mb-5 ms-3">
             <div class="card bg-danger mx-auto" style="width: 18rem;">
                 <img src="{{ asset('uploads/' ~ article.image) }}" class="card-img-top" alt="une photo" style="object-fit: contain;" width="150" height="220">
                 <div class="card-body">
