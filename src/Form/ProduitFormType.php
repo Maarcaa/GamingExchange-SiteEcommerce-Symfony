@@ -40,9 +40,6 @@ class ProduitFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('quantite_stock', TextType::class, [
-                'label' => 'Stock',
-            ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'marque',

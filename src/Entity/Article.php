@@ -40,11 +40,6 @@ class Article
     private $image;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantite_stock;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
@@ -139,18 +134,6 @@ class Article
     public function setImage(string $image): self
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    public function getQuantiteStock(): ?int
-    {
-        return $this->quantite_stock;
-    }
-
-    public function setQuantiteStock(int $quantite_stock): self
-    {
-        $this->quantite_stock = $quantite_stock;
 
         return $this;
     }

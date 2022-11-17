@@ -34,7 +34,6 @@
                 <td>{{ article.description }}</td>
                 <td>{{ article.prix }}</td>€
                 <td><img src="{{ asset('uploads/' ~ article.image) }}" alt="image de article" width="80" height="58" style="object-fit: contain;"></td>
-                <td>{{ article.quantiteStock }}</td>
                 <td>{{ article.categorie.marque }}</td>
                 <td>{{ article.createdAt | date('d/m/Y') }}</td>
                 <td>{{ article.updatedAt | date('d/m/Y') }}</td>
